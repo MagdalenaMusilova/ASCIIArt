@@ -166,6 +166,7 @@ project/plugins/project/
 ### Scala ###
 *.class
 *.log
+/.bsp
 
 ### Windows ###
 # Windows thumbnail cache files
