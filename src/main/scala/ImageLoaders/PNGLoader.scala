@@ -1,4 +1,4 @@
-package ImageLoader
+package ImageLoaders
 
 import Images.{BitmapImage, RGBColor}
 

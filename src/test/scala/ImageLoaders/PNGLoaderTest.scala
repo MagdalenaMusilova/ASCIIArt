@@ -1,4 +1,4 @@
-package ImageLoader
+package ImageLoaders
 
 import Images.RGBColor
 import org.scalatest.FunSuite
