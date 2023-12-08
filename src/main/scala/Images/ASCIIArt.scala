@@ -16,12 +16,20 @@ class ASCIIArt(value : Vector[Vector[Int]], shader : Map[Range, Char]) {
     }
   }
 
-  def GetAt(x : Int, y : Int) : Char = {
+  def GetShader() : Map[Range, Char] = {
+    shader
+  }
+
+  def GetValueAt(x : Int, y : Int) : Int = {
     if (x < 0 || x >= width ||
       y < 0 || y >= height) {
       throw new ArrayIndexOutOfBoundsException()
     }
-    shadeScale(value(y)(x))
+    value(y)(x)
+  }
+
+  def GetAt(x : Int, y : Int) : Char = {
+    shadeScale(GetValueAt(x,y))
   }
 
   def GetLine(y: Int) : Vector[Char] = {
