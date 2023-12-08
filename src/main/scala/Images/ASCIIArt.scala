@@ -16,11 +16,15 @@ class ASCIIArt(value : Vector[Vector[Int]], shader : Map[Range, Char]) {
     }
   }
 
-  def getAt(x : Int, y : Int) : Char = {
+  def GetAt(x : Int, y : Int) : Char = {
     if (x < 0 || x >= width ||
       y < 0 || y >= height) {
       throw new ArrayIndexOutOfBoundsException()
     }
     shadeScale(value(y)(x))
+  }
+
+  def GetLine(y: Int) : Vector[Char] = {
+    value(y).map(a => shadeScale(a))
   }
 }

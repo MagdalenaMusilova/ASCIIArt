@@ -16,10 +16,10 @@ class ASCIIArtTest extends FunSuite{
       (151 until 256) -> '4'
     )
     val asciiArt = new ASCIIArt(values, shader)
-    assert((0 until 10).forall(x => asciiArt.getAt(x%16, x/16) == '0'))
-    assert((10 until 100).forall(x => asciiArt.getAt(x%16, x/16) == '1'))
-    assert((100 until 150).forall(x => asciiArt.getAt(x%16, x/16) == '2'))
-    assert((150 until 151).forall(x => asciiArt.getAt(x%16, x/16) == '3'))
-    assert((151 until 256).forall(x => asciiArt.getAt(x%16, x/16) == '4'))
+    assert((0 until 10).forall(x => asciiArt.GetAt(x%16, x/16) == '0'))
+    assert((10 until 100).forall(x => asciiArt.GetAt(x%16, x/16) == '1'))
+    assert((100 until 150).forall(x => asciiArt.GetAt(x%16, x/16) == '2'))
+    assert((150 until 151).forall(x => asciiArt.GetAt(x%16, x/16) == '3'))
+    assert((151 until 256).forall(x => asciiArt.GetAt(x%16, x/16) == '4'))
   }
 }

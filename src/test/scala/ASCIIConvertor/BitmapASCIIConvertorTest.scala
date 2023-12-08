@@ -21,8 +21,8 @@ class BitmapASCIIConvertorTest extends FunSuite{
       (2 until 255) -> 'I',
       (255 until 256) -> 'O',
     )
-    val convertor : BitmapASCIIConvertor = new BitmapASCIIConvertor(bitmap)
-    val res = convertor.GetASCIIArt(shader)
+    val convertor : BitmapASCIIConvertor = new BitmapASCIIConvertor(bitmap, shader)
+    val res = convertor.GetASCIIArt()
 
     val expectedRes : Vector[Vector[Char]] = Vector(
       Vector('X','I','X','I','X'),
@@ -34,7 +34,7 @@ class BitmapASCIIConvertorTest extends FunSuite{
     assert(
       (0 until 5).forall(y =>
         (0 until 5). forall(x =>
-          res.getAt(x,y) == expectedRes(y)(x)))
+          res.GetAt(x,y) == expectedRes(y)(x)))
     )
   }
 

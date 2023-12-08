@@ -2,8 +2,8 @@ package ASCIIConvertor
 
 import Images.{ASCIIArt, BitmapImage}
 
-class BitmapASCIIConvertor(image : BitmapImage) extends ASCIIConvertor {
-  override def GetASCIIArt(shader : Map[Range, Char]): ASCIIArt = {
+class BitmapASCIIConvertor(image : BitmapImage, shader : Map[Range, Char]) extends ASCIIConvertor {
+  override def GetASCIIArt(): ASCIIArt = {
     val values : Vector[Vector[Int]] =
       (0 until image.height)
         .map(y => (0 until image.width)
