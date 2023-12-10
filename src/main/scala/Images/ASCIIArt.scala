@@ -32,7 +32,7 @@ class ASCIIArt(value : Vector[Vector[Int]], shader : Map[Range, Char]) {
     shadeScale(GetValueAt(x,y))
   }
 
-  def GetLine(y: Int) : Vector[Char] = {
+  def GetRow(y: Int) : Vector[Char] = {
     value(y).map(a => shadeScale(a))
   }
 }

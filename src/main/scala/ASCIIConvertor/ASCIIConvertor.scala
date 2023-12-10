@@ -1,7 +1,7 @@
 package ASCIIConvertor
 
-import Images.ASCIIArt
+import Images.{ASCIIArt, BitmapImage}
 
 trait ASCIIConvertor {
-  def GetASCIIArt() : ASCIIArt
+  def GetASCIIArt(image : BitmapImage) : ASCIIArt
 }

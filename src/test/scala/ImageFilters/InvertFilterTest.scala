@@ -24,6 +24,6 @@ class InvertFilterTest extends FunSuite{
       Vector('X','I','O'),
       Vector('O','O','O')
     )
-    assert((0 until 3).forall(y => expectedRes(y).equals(invertImage.GetLine(y))))
+    assert((0 until 3).forall(y => expectedRes(y).equals(invertImage.GetRow(y))))
   }
 }

@@ -1,4 +1,4 @@
-package ImageSavers
+package ImageExporters
 
 import Images.ASCIIArt
 import org.scalatest.FunSuite
@@ -6,8 +6,8 @@ import org.scalatest.FunSuite
 import java.io.File
 import scala.io.Source
 
-class ASCIIArtSaverToFileTest extends FunSuite{
-  test("SaveASCIIArtToFileTest") {
+class FileImageExporterTest extends FunSuite{
+  test("FileImageExporterTest") {
     val values : Vector[Vector[Int]] = Vector(
       Vector(0, 100, 0),
       Vector(100, 200, 100),
@@ -19,8 +19,8 @@ class ASCIIArtSaverToFileTest extends FunSuite{
       (150 until 256) -> 'X'
     )
     val image : ASCIIArt = new ASCIIArt(values, shader)
-    val saver : ASCIIArtSaverToFile = new ASCIIArtSaverToFile(image, "tmp")
-    saver.SaveImage()
+    val saver : FileImageExporter = new FileImageExporter( "tmp.txt")
+    saver.Export(image)
 
     val expectedRes : Vector[String] = Vector(
       "OIO",

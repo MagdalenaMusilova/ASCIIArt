@@ -5,8 +5,8 @@ import Images.{BitmapImage, RGBColor}
 import java.io.File
 import javax.imageio.ImageIO
 
-class PNGLoader(filePath : String) extends ImageLoader {
-  override def GetImage(): BitmapImage = {
+class FileImageLoader(filePath : String) extends ImageLoader {
+  override def Get(): BitmapImage = {
     val img = ImageIO.read(new File(filePath))
     val imageData: Vector[Vector[RGBColor]] =
       (0 until img.getHeight())

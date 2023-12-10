@@ -1,5 +1,8 @@
 package Main
 
+import IO.{ConsoleInput, ConsoleOutput}
+import UI.Views.ConsoleView
+
 object Main extends App {
-  println("Hello there")
+  new ConsoleView(new ConsoleInput, new ConsoleOutput).Start()
 }

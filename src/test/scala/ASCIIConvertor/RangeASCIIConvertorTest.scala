@@ -3,8 +3,8 @@ package ASCIIConvertor
 import Images.{BitmapImage, RGBColor}
 import org.scalatest.FunSuite
 
-class BitmapASCIIConvertorTest extends FunSuite{
-  test("ASCIIConvertTest") {
+class RangeASCIIConvertorTest extends FunSuite{
+  test("RangeASCIIConvertorTest") {
     val white : RGBColor = new RGBColor(255,255,255)
     val grey : RGBColor = new RGBColor(128,128,128)
     val black : RGBColor = new RGBColor(0,0,0)
@@ -21,8 +21,8 @@ class BitmapASCIIConvertorTest extends FunSuite{
       (2 until 255) -> 'I',
       (255 until 256) -> 'O',
     )
-    val convertor : BitmapASCIIConvertor = new BitmapASCIIConvertor(bitmap, shader)
-    val res = convertor.GetASCIIArt()
+    val convertor : RangeASCIIConvertor = new RangeASCIIConvertor(shader)
+    val res = convertor.GetASCIIArt(bitmap)
 
     val expectedRes : Vector[Vector[Char]] = Vector(
       Vector('X','I','X','I','X'),

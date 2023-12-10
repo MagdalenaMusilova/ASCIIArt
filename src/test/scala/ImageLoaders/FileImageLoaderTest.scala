@@ -3,10 +3,10 @@ package ImageLoaders
 import Images.RGBColor
 import org.scalatest.FunSuite
 
-class PNGLoaderTest extends FunSuite{
-  test("LoadingJPG") {
-    val reader = new PNGLoader("loaderTest1.png")
-    val image = reader.GetImage()
+class FileImageLoaderTest extends FunSuite{
+  test("FileImageLoaderTest") {
+    val reader = new FileImageLoader("loaderTest1.png")
+    val image = reader.Get()
     //first row (greys)
     assert(image.getAt(0,0) == new RGBColor(255,255,255))
     assert(image.getAt(1,0) == new RGBColor(128,128,128))
