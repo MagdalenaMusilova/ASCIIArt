@@ -1,14 +1,15 @@
 package UI.Views
 
-import ASCIIConvertor.{ASCIIConvertor, DefaultASCIIConvertor, EmptyASCIIConvertor, RangeASCIIConvertor, SequenceASCIIConvertor}
+import ASCIIConvertor.{BlockASCIIConvertor, DefaultASCIIConvertor, PaulBourkeASCIIConvertor, RangeASCIIConvertor, SequenceASCIIConvertor, ShortPaulBourkeASCIIConvertor}
 import IO.{Input, Output}
-import ImageExporters.{EmptyImageExporter, FileImageExporter, ImageExporter, MultiImageExporter, OutputImageExporter}
-import ImageFilters.{FlipFilter, ImageFilter, InvertFilter, MultiFilter}
-import ImageLoaders.{EmptyImageLoader, FileImageLoader, ImageLoader}
+import ImageExporters.{FileImageExporter, MultiImageExporter, OutputImageExporter}
+import ImageFilters.{BrightnessFilter, FlipFilter, ImageFilter, InvertFilter, MultiFilter, RotateFilter, ScaleFilter}
+import ImageLoaders.{FileImageLoader, RandomImageLoader}
 import ShaderLoaders.FileShaderLoader
-import UI.Commands.CommandTypes.{CONVERTIMAGE, CommandType, EXIT, HELP, OTHER}
+import UI.Commands.CommandTypes.CommandType
 import UI.Commands.ConvertImageCommandTypes.{CONVERTOR, ConvertImageCommandType, EXPORTER, FILTER, LOADER}
-import UI.Commands.{CICommand, ConvertImageData}
+import UI.Commands.ExactCommandType.{BRIGHTNESSFILTER, DEFAULTCONVERTOR, FILEEXPORTER, FILELOADER, FLIPFILTER, INVERTFILTER, OUTPUTEXPORTER, RANDOMLOADER, RANGECONVERTOR, ROTATEFILTER, SCALEFILTER, SEQUENCECONVERTOR}
+import UI.Commands.{CommandTypes, ConvertImageData}
 import UI.Controllers.ConsoleController
 
 import scala.collection.mutable.ArrayBuffer
@@ -22,16 +23,16 @@ class ConsoleView(input : Input, output : Output) {
       val textCommands = GroupTextInput(input.ReadLine())
       val commandType = GetInputType(textCommands)
       commandType match {
-        case HELP => ShowHelp()
-        case EXIT => Stop()
-        case CONVERTIMAGE => ConvertImage(textCommands)
+        case CommandTypes.HELP => ShowHelp()
+        case CommandTypes.EXIT => Stop()
+        case CommandTypes.CONVERTIMAGE => ConvertImage(textCommands)
       }
     }
     controller.Stop()
   }
 
   private def GroupTextInput(text: String): Vector[Vector[String]] = {
-    val splitText = text.trim.split(" ")
+    val splitText = text.trim.split("[ =]")
     val res = new ArrayBuffer[ArrayBuffer[String]]()
     splitText.foreach(word =>
       if (word.startsWith("--")) {
@@ -55,7 +56,7 @@ class ConsoleView(input : Input, output : Output) {
     if (res.isDefined) {
       res.get._1
     } else {
-      OTHER
+      CommandTypes.OTHER
     }
   }
 
@@ -109,13 +110,18 @@ class ConsoleView(input : Input, output : Output) {
       throw new Exception("Too many image loaders")
     }
     val textCom = textCommands.head
-    val command = controller.CICommandsByType(LOADER).find(x => x.command == textCom.head).get.asInstanceOf[CICommand[ImageLoader]]
+    val command = controller.CICommandsByType(LOADER).find(x => x.command == textCom.head).get
 
-    command.linkedClass match {
-      case _: FileImageLoader =>
-        if (textCom.size != 2) throw new Exception("Too many arguments for image loading")
+    if (textCom.size - 1 != command.arguments.size){
+      throw new Exception("Too many arguments for image loading")
+    }
+    command.exactType match {
+      case FILELOADER =>
         commandData.imageLoader = new FileImageLoader(textCom(1))
-      case _ => throw new Exception("Chosen image loader not implemented")
+      case RANDOMLOADER =>
+        commandData.imageLoader = new RandomImageLoader()
+      case _ =>
+        throw new Exception("Chosen image loader not implemented")
     }
   }
 
@@ -124,17 +130,24 @@ class ConsoleView(input : Input, output : Output) {
       throw new Exception("No image exporter")
     }
     textCommands.foreach(textCom => {
-      val command = controller.CICommandsByType(EXPORTER).find(x => x.command == textCom.head).get.asInstanceOf[CICommand[ImageExporter]]
-      command.linkedClass match {
-        case _: FileImageExporter =>
-          if (textCom.size != 2) throw new Exception("Too many arguments for image exporting")
+      val command = controller.CICommandsByType(EXPORTER).find(x => x.command == textCom.head).get
+      if (textCom.size - 1 != command.arguments.size) {
+        throw new Exception("Too many arguments for image exporting")
+      }
+      command.exactType match {
+        case FILEEXPORTER =>
           commandData.imageExporter = new MultiImageExporter(new FileImageExporter(textCom(1)), commandData.imageExporter)
-        case _: OutputImageExporter =>
-          if (textCom.size != 1) throw new Exception("Too many arguments for image exporting")
+        case OUTPUTEXPORTER =>
           commandData.imageExporter = new MultiImageExporter(new OutputImageExporter(output), commandData.imageExporter)
-        case _ => throw new Exception("Chosen image exporter not implemented")
+        case _ =>
+          throw new Exception("Chosen image exporter not implemented")
       }
     })
+  }
+
+  private def ConvertorClassToString[T](): String = {
+    val instance = new T
+    instance.toString.replace("asciiconvertor", "")
   }
 
   private def LoadConverter(textCommands: Vector[Vector[String]], commandData: ConvertImageData): Unit = {
@@ -146,16 +159,24 @@ class ConsoleView(input : Input, output : Output) {
       return
     }
     textCommands.foreach(textCom => {
-      val command = controller.CICommandsByType(CONVERTOR).find(x => x.command == textCom.head).get.asInstanceOf[CICommand[ASCIIConvertor]]
-      command.linkedClass match {
-        case _: DefaultASCIIConvertor =>
-          if (textCom.size != 1) throw new Exception("Too many arguments for ASCII convertor")
-          commandData.ASCIIConvertor = new DefaultASCIIConvertor()
-        case _: SequenceASCIIConvertor =>
-          if (textCom.size != 2) throw new Exception("Too many arguments for ASCII convertor")
+      val command = controller.CICommandsByType(CONVERTOR).find(x => x.command == textCom.head).get
+      if (textCom.size - 1 != command.arguments.size) {
+        throw new Exception("Too many arguments for ASCII convertor")
+      }
+      command.exactType match {
+        case DEFAULTCONVERTOR =>
+          if (textCom(1) == ConvertorClassToString[PaulBourkeASCIIConvertor]()){
+            commandData.ASCIIConvertor = new PaulBourkeASCIIConvertor
+          } else if (textCom(1) == ConvertorClassToString[ShortPaulBourkeASCIIConvertor]()) {
+            commandData.ASCIIConvertor = new ShortPaulBourkeASCIIConvertor
+          } else if (textCom(1) == ConvertorClassToString[BlockASCIIConvertor]()) {
+            commandData.ASCIIConvertor = new BlockASCIIConvertor
+          } else {
+            throw new Exception("Unknown table name")
+          }
+        case SEQUENCECONVERTOR =>
           commandData.ASCIIConvertor = new SequenceASCIIConvertor(textCom(1))
-        case _: RangeASCIIConvertor =>
-          if (textCom.size != 2) throw new Exception("Too many arguments for ASCII convertor")
+        case RANGECONVERTOR =>
           val shader = new FileShaderLoader(textCom(1)).Get()
           commandData.ASCIIConvertor = new RangeASCIIConvertor(shader)
         case _ => throw new Exception("Chosen ASCII convertor not implemented")
@@ -165,17 +186,33 @@ class ConsoleView(input : Input, output : Output) {
 
   private def LoadFilter(textCommands: Vector[Vector[String]], commandData: ConvertImageData): Unit = {
     textCommands.foreach(textCom => {
-      val command = controller.CICommandsByType(FILTER).find(x => x.command == textCom.head).get.asInstanceOf[CICommand[ImageFilter]]
-      command.linkedClass match {
-        case _: InvertFilter =>
-          if (textCom.size != 1) throw new Exception("Too many arguments for invert filter")
+      val command = controller.CICommandsByType(FILTER).find(x => x.command == textCom.head).get
+      if (textCom.size - 1 != command.arguments.size) {
+        throw new Exception("Too many arguments for ASCII convertor")
+      }
+      command.exactType match {
+        case ROTATEFILTER =>
+          if (!textCom(1).forall(x => x.isDigit)){
+            throw new Exception("Input for rotate filter isn't a number")
+          }
+          commandData.imageFilter = new MultiFilter(new RotateFilter(textCom(1).toInt), commandData.imageFilter)
+        case SCALEFILTER =>
+          if (!textCom(1).forall(x => x.isDigit)) {
+            throw new Exception("Input for rotate filter isn't a number")
+          }
+          commandData.imageFilter = new MultiFilter(new ScaleFilter(textCom(1).toInt), commandData.imageFilter)
+        case INVERTFILTER =>
           commandData.imageFilter = new MultiFilter(new InvertFilter, commandData.imageFilter)
-        case _: FlipFilter =>
-          if (textCom.size != 2) throw new Exception("Too many arguments for flip filter")
+        case FLIPFILTER =>
           val direction = textCom(1).toLowerCase()
           if (direction != "x" && direction != "y") throw new Exception("Unknown flip direction")
-          val flipX = direction == "x"
+          val flipX = (direction == "x")
           commandData.imageFilter = new MultiFilter(new FlipFilter(flipX), commandData.imageFilter)
+        case BRIGHTNESSFILTER =>
+          if (!textCom(1).forall(x => x.isDigit)) {
+            throw new Exception("Input for rotate filter isn't a number")
+          }
+          commandData.imageFilter = new MultiFilter(new BrightnessFilter(textCom(1).toInt), commandData.imageFilter)
         case _ => throw new Exception("Chosen filter not implemented")
       }
     })

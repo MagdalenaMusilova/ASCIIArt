@@ -1,42 +1,37 @@
 package UI.Controllers
 
-import ASCIIConvertor.{DefaultASCIIConvertor, RangeASCIIConvertor, SequenceASCIIConvertor}
 import IO.Output
-import ImageExporters.{FileImageExporter, OutputImageExporter}
-import ImageFilters.{BrightnessFilter, FlipFilter, InvertFilter, RotateFilter, ScaleFilter}
-import ImageLoaders.{FileImageLoader, RandomImageLoader}
 import UI.Commands.CommandTypes.{CONVERTIMAGE, CommandType, EXIT, HELP}
 import UI.Commands.ConvertImageCommandTypes.{CONVERTOR, ConvertImageCommandType, EXPORTER, FILTER, LOADER}
-import UI.Commands.{CICommand, Command, ConvertImageData}
-
-import scala.util.hashing.Hashing.Default
+import UI.Commands.ExactCommandType.{BRIGHTNESSFILTER, DEFAULTCONVERTOR, FILEEXPORTER, FILELOADER, FLIPFILTER, INVERTFILTER, OUTPUTEXPORTER, RANDOMLOADER, RANGECONVERTOR, ROTATEFILTER, SCALEFILTER, SEQUENCECONVERTOR}
+import UI.Commands.{Command, ConvertImageData, ExactCommandType}
 
 class ConsoleController(output : Output) extends UIController {
   def CommandsByType : Map[CommandType, Vector[Command]] = Map(
-    EXIT -> Vector(Command("--exit", Vector.empty, "Lists all available commands")),
-    HELP -> Vector(Command("--help", Vector.empty, "Turns off program")),
+    HELP -> Vector(Command("--help", Vector.empty, "Turns off program", ExactCommandType.HELP)),
+    EXIT -> Vector(Command("--exit", Vector.empty, "Lists all available commands", ExactCommandType.EXIT)),
     CONVERTIMAGE -> CICommandsByType.values.flatten.toVector
   )
   def CICommandsByType : Map[ConvertImageCommandType, Vector[Command]] = Map(
     LOADER -> Vector(
-      new CICommand[FileImageLoader]("--image", Vector("[pathToFile]"), "Loads image stored in file", new FileImageLoader("")),
-      new CICommand[RandomImageLoader]("--image-random", Vector(), "Creates random image", new RandomImageLoader())
+      Command("--image", Vector("[pathToFile]"), "Loads image stored in file", FILELOADER),
+      Command("--image-random", Vector(), "Creates random image", RANDOMLOADER)
     ),
     EXPORTER -> Vector(
-      new CICommand[FileImageExporter]("--output-file", Vector("[pathToFile]"), "Stores image in file", new FileImageExporter("")),
-      new CICommand[OutputImageExporter]("--output-console", Vector(), "Prints image to console", new OutputImageExporter(output))
+      Command("--output-file", Vector("[pathToFile]"), "Stores image in file", FILEEXPORTER),
+      Command("--output-console", Vector(), "Prints image to console", OUTPUTEXPORTER)
     ),
     CONVERTOR -> Vector(
-      new CICommand[DefaultASCIIConvertor]("--table", Vector("[tableName]"), "Uses predefined values to convert image to ASCII art", new DefaultASCIIConvertor()),
-      new CICommand[SequenceASCIIConvertor]("--custom-table", Vector("[characters]"), "Uses given sequence to convert image to ASCII art", new SequenceASCIIConvertor("")),
-      new CICommand[RangeASCIIConvertor]("--nonlinear-table", Vector("[pathToFile]"), "Uses non-linear table defined in the given file to convert image to ASCII art", new RangeASCIIConvertor(Map()))
+      Command("--table", Vector("[tableName]"), "Uses predefined table to convert image to ASCII art", DEFAULTCONVERTOR),
+      Command("--custom-table", Vector("[characters]"), "Uses given sequence to convert image to ASCII art", SEQUENCECONVERTOR),
+      Command("--nonlinear-table", Vector("[pathToFile]"), "Uses non-linear table defined in the given file to convert image to ASCII art", RANGECONVERTOR)
     ),
     FILTER -> Vector(
-      new CICommand[RotateFilter]("--rotate", Vector("[degrees]"), "Rotate image by given degrees", new RotateFilter(0)),
-      new CICommand[ScaleFilter]("--scale", Vector("[scaleValue]"), "Scales/shrinks image by given amount", new ScaleFilter(0)),
-      new CICommand[InvertFilter]("--invert", Vector(), "Invert the colors of the image", new InvertFilter),
-      new CICommand[FlipFilter]("--flip", Vector("[axis]"), "Flip image on x or y axis", new FlipFilter(true)),
-      new CICommand[BrightnessFilter]("--brightness", Vector("[brightnessValue]"), "Increases/decreases brightness of image by given value", new BrightnessFilter(0))
+      Command("--rotate", Vector("[degrees]"), "Rotate image by given degrees", ROTATEFILTER),
+      Command("--scale", Vector("[scaleValue]"), "Scales/shrinks image by given amount", SCALEFILTER),
+      Command("--invert", Vector(), "Invert the colors of the image", INVERTFILTER),
+      Command("--flip", Vector("[axis]"), "Flip image on x or y axis", FLIPFILTER),
+      Command("--brightness", Vector("[brightnessValue]"), "Increases/decreases brightness of image by given value", BRIGHTNESSFILTER)
     )
   )
 
