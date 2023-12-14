@@ -10,13 +10,13 @@ class BitmapImage(value : Vector[Vector[RGBColor]]){
     }
   }
 
-  def getAt(x : Int, y : Int) : RGBColor = {
-    if (x < 0 || x >= width ||
-        y < 0 || y >= height){
+  def GetAt(x : Int, y : Int) : RGBColor = {
+    if (!(0 until width).contains(x) ||
+        !(0 until height).contains(y)){
       throw new ArrayIndexOutOfBoundsException()
     }
     value(y)(x)
   }
 
-  assert(value.isEmpty || value.forall(_.length == value.head.length))
+  require(value.isEmpty || value.forall(_.length == value.head.length))
 }

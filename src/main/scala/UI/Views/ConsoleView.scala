@@ -2,7 +2,7 @@ package UI.Views
 
 import ASCIIConvertor.{BlockASCIIConvertor, DefaultASCIIConvertor, PaulBourkeASCIIConvertor, RangeASCIIConvertor, SequenceASCIIConvertor, ShortPaulBourkeASCIIConvertor}
 import IO.{Input, Output}
-import ImageExporters.{FileImageExporter, MultiImageExporter, OutputImageExporter}
+import ImageExporters.{EmptyImageExporter, FileImageExporter, ImageExporter, MultiImageExporter, OutputImageExporter}
 import ImageFilters.{BrightnessFilter, FlipFilter, ImageFilter, InvertFilter, MultiFilter, RotateFilter, ScaleFilter}
 import ImageLoaders.{FileImageLoader, RandomImageLoader}
 import ShaderLoaders.FileShaderLoader
@@ -125,6 +125,14 @@ class ConsoleView(input : Input, output : Output) {
     }
   }
 
+  private def AddExporter(commandData: ConvertImageData, exporter: ImageExporter): Unit = {
+    if (commandData.imageExporter == EmptyImageExporter){
+      commandData.imageExporter = exporter
+    } else {
+      commandData.imageExporter = new MultiImageExporter(exporter, commandData.imageExporter)
+    }
+  }
+
   private def LoadExporters(textCommands: Vector[Vector[String]], commandData: ConvertImageData): Unit = {
     if (textCommands.isEmpty) {
       throw new Exception("No image exporter")
@@ -136,17 +144,16 @@ class ConsoleView(input : Input, output : Output) {
       }
       command.exactType match {
         case FILEEXPORTER =>
-          commandData.imageExporter = new MultiImageExporter(new FileImageExporter(textCom(1)), commandData.imageExporter)
+          AddExporter(commandData, new FileImageExporter(textCom(1)))
         case OUTPUTEXPORTER =>
-          commandData.imageExporter = new MultiImageExporter(new OutputImageExporter(output), commandData.imageExporter)
+          AddExporter(commandData, new OutputImageExporter(output))
         case _ =>
           throw new Exception("Chosen image exporter not implemented")
       }
     })
   }
 
-  private def ConvertorClassToString[T](): String = {
-    val instance = new T
+  private def ConvertorClassToString(instance: Any): String = {
     instance.toString.replace("asciiconvertor", "")
   }
 
@@ -155,7 +162,7 @@ class ConsoleView(input : Input, output : Output) {
       throw new Exception("Too many ASCII convertors")
     }
     if (textCommands.isEmpty){
-      commandData.ASCIIConvertor = new DefaultASCIIConvertor
+      commandData.ASCIIConvertor = DefaultASCIIConvertor
       return
     }
     textCommands.foreach(textCom => {
@@ -165,11 +172,11 @@ class ConsoleView(input : Input, output : Output) {
       }
       command.exactType match {
         case DEFAULTCONVERTOR =>
-          if (textCom(1) == ConvertorClassToString[PaulBourkeASCIIConvertor]()){
+          if (textCom(1) == ConvertorClassToString(new PaulBourkeASCIIConvertor())){
             commandData.ASCIIConvertor = new PaulBourkeASCIIConvertor
-          } else if (textCom(1) == ConvertorClassToString[ShortPaulBourkeASCIIConvertor]()) {
+          } else if (textCom(1) == ConvertorClassToString(new ShortPaulBourkeASCIIConvertor())) {
             commandData.ASCIIConvertor = new ShortPaulBourkeASCIIConvertor
-          } else if (textCom(1) == ConvertorClassToString[BlockASCIIConvertor]()) {
+          } else if (textCom(1) == ConvertorClassToString(new BlockASCIIConvertor())) {
             commandData.ASCIIConvertor = new BlockASCIIConvertor
           } else {
             throw new Exception("Unknown table name")

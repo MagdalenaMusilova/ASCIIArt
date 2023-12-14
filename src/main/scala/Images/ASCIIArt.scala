@@ -1,7 +1,7 @@
 package Images
 
 class ASCIIArt(value : Vector[Vector[Int]], shader : Map[Range, Char]) {
-  val shadeScale : Vector[Char] = {
+  private val shadeScale : Vector[Char] = {
     (0 until 256)
       .map(a => shader.find(b => b._1.contains(a)).head._2).toVector
   }
@@ -21,8 +21,8 @@ class ASCIIArt(value : Vector[Vector[Int]], shader : Map[Range, Char]) {
   }
 
   def GetValueAt(x : Int, y : Int) : Int = {
-    if (x < 0 || x >= width ||
-      y < 0 || y >= height) {
+    if (!(0 until width).contains(x) ||
+      !(0 until height).contains(y)) {
       throw new ArrayIndexOutOfBoundsException()
     }
     value(y)(x)
@@ -35,4 +35,6 @@ class ASCIIArt(value : Vector[Vector[Int]], shader : Map[Range, Char]) {
   def GetRow(y: Int) : Vector[Char] = {
     value(y).map(a => shadeScale(a))
   }
+
+  require(value.isEmpty || value.forall(_.length == value.head.length))
 }

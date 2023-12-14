@@ -30,7 +30,7 @@ class ConsoleViewTest extends FunSuite with TimeLimitedTests{
     val consoleView = new ConsoleView(input, output)
 
     input.WriteLine("--help")
-    input.WriteLine("--image loaderTest2.png --export-to-file tmp.txt --sequence-shader XIO --invert")
+    input.WriteLine("--image loaderTest2.png --output-file tmp.txt --custom-table XIO --invert")
     input.WriteLine("--exit")
 
     consoleView.Start()

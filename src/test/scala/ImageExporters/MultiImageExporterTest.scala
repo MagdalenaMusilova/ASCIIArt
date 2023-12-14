@@ -20,7 +20,6 @@ class MultiImageExporterTest extends FunSuite {
       (150 until 256) -> 'X'
     )
     val image: ASCIIArt = new ASCIIArt(values, shader)
-    val saver0 = EmptyImageExporter
     val saver1: FileImageExporter = new FileImageExporter("tmp.txt")
     val outputA = new StringOutput()
     val saver2: OutputImageExporter = new OutputImageExporter(outputA)
@@ -28,8 +27,7 @@ class MultiImageExporterTest extends FunSuite {
     val saver3: OutputImageExporter = new OutputImageExporter(outputB)
     val saver =
       new MultiImageExporter(saver3,
-        new MultiImageExporter(saver2,
-          new MultiImageExporter(saver1, saver0)))
+        new MultiImageExporter(saver2, saver1))
     saver.Export(image)
 
     val expectedRes: Vector[String] = Vector(

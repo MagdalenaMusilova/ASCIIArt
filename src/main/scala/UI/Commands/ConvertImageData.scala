@@ -1,6 +1,6 @@
 package UI.Commands
 
-import ASCIIConvertor.{ASCIIConvertor, EmptyASCIIConvertor}
+import ASCIIConvertor.{ASCIIConvertor, DefaultASCIIConvertor}
 import ImageExporters.{EmptyImageExporter, ImageExporter}
 import ImageFilters.{EmptyFilter, ImageFilter}
 import ImageLoaders.{EmptyImageLoader, ImageLoader}
@@ -8,6 +8,6 @@ import ImageLoaders.{EmptyImageLoader, ImageLoader}
 class ConvertImageData {
   var imageLoader : ImageLoader = EmptyImageLoader
   var imageExporter : ImageExporter = EmptyImageExporter
-  var ASCIIConvertor : ASCIIConvertor = EmptyASCIIConvertor
+  var ASCIIConvertor : ASCIIConvertor = DefaultASCIIConvertor
   var imageFilter : ImageFilter = EmptyFilter
 }

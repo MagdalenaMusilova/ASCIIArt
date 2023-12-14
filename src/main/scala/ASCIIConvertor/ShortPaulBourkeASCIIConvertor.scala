@@ -1,5 +1,5 @@
 package ASCIIConvertor
 
-class ShortPaulBourkeASCIIConvertor extends SequenceASCIIConvertor("@%#*+=-:.") {
+class ShortPaulBourkeASCIIConvertor extends SequenceASCIIConvertor("@%#*+=-:. ") {
 
 }

@@ -1,5 +1,5 @@
 package ASCIIConvertor
 
-class BlockASCIIConvertor extends SequenceASCIIConvertor("█▓▒░"){
+class BlockASCIIConvertor extends SequenceASCIIConvertor("█▓▒░ "){
 
 }

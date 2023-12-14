@@ -1,5 +1,5 @@
 package ASCIIConvertor
 
-class DefaultASCIIConvertor extends PaulBourkeASCIIConvertor {
+object DefaultASCIIConvertor extends PaulBourkeASCIIConvertor {
 
 }
