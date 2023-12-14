@@ -1,13 +1,15 @@
 package UI.Controllers
 
-import ASCIIConvertor.SequenceASCIIConvertor
+import ASCIIConvertor.{DefaultASCIIConvertor, RangeASCIIConvertor, SequenceASCIIConvertor}
 import IO.Output
-import ImageExporters.FileImageExporter
-import ImageFilters.InvertFilter
-import ImageLoaders.FileImageLoader
+import ImageExporters.{FileImageExporter, OutputImageExporter}
+import ImageFilters.{BrightnessFilter, FlipFilter, InvertFilter, RotateFilter, ScaleFilter}
+import ImageLoaders.{FileImageLoader, RandomImageLoader}
 import UI.Commands.CommandTypes.{CONVERTIMAGE, CommandType, EXIT, HELP}
 import UI.Commands.ConvertImageCommandTypes.{CONVERTOR, ConvertImageCommandType, EXPORTER, FILTER, LOADER}
 import UI.Commands.{CICommand, Command, ConvertImageData}
+
+import scala.util.hashing.Hashing.Default
 
 class ConsoleController(output : Output) extends UIController {
   def CommandsByType : Map[CommandType, Vector[Command]] = Map(
@@ -16,10 +18,26 @@ class ConsoleController(output : Output) extends UIController {
     CONVERTIMAGE -> CICommandsByType.values.flatten.toVector
   )
   def CICommandsByType : Map[ConvertImageCommandType, Vector[Command]] = Map(
-    LOADER -> Vector(new CICommand[FileImageLoader]("--image", Vector("[pathToFile]"), "Loads image stored in file", new FileImageLoader(""))),
-    EXPORTER -> Vector(new CICommand[FileImageExporter]("--export-to-file", Vector("[pathToFile]"), "Stores image in file",new FileImageExporter(""))),
-    CONVERTOR -> Vector(new CICommand[SequenceASCIIConvertor]("--sequence-shader", Vector("sequence"), "Uses given sequence as shader for ASCII art sequence", new SequenceASCIIConvertor(""))),
-    FILTER -> Vector(new CICommand[InvertFilter]("--invert", Vector(), "Invert the colors of the image", new InvertFilter))
+    LOADER -> Vector(
+      new CICommand[FileImageLoader]("--image", Vector("[pathToFile]"), "Loads image stored in file", new FileImageLoader("")),
+      new CICommand[RandomImageLoader]("--image-random", Vector(), "Creates random image", new RandomImageLoader())
+    ),
+    EXPORTER -> Vector(
+      new CICommand[FileImageExporter]("--output-file", Vector("[pathToFile]"), "Stores image in file", new FileImageExporter("")),
+      new CICommand[OutputImageExporter]("--output-console", Vector(), "Prints image to console", new OutputImageExporter(output))
+    ),
+    CONVERTOR -> Vector(
+      new CICommand[DefaultASCIIConvertor]("--table", Vector("[tableName]"), "Uses predefined values to convert image to ASCII art", new DefaultASCIIConvertor()),
+      new CICommand[SequenceASCIIConvertor]("--custom-table", Vector("[characters]"), "Uses given sequence to convert image to ASCII art", new SequenceASCIIConvertor("")),
+      new CICommand[RangeASCIIConvertor]("--nonlinear-table", Vector("[pathToFile]"), "Uses non-linear table defined in the given file to convert image to ASCII art", new RangeASCIIConvertor(Map()))
+    ),
+    FILTER -> Vector(
+      new CICommand[RotateFilter]("--rotate", Vector("[degrees]"), "Rotate image by given degrees", new RotateFilter(0)),
+      new CICommand[ScaleFilter]("--scale", Vector("[scaleValue]"), "Scales/shrinks image by given amount", new ScaleFilter(0)),
+      new CICommand[InvertFilter]("--invert", Vector(), "Invert the colors of the image", new InvertFilter),
+      new CICommand[FlipFilter]("--flip", Vector("[axis]"), "Flip image on x or y axis", new FlipFilter(true)),
+      new CICommand[BrightnessFilter]("--brightness", Vector("[brightnessValue]"), "Increases/decreases brightness of image by given value", new BrightnessFilter(0))
+    )
   )
 
   private def CommandToOneLine(commands : Vector[Command]) : Vector[String] = {

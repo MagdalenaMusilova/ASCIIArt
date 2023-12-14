@@ -1,12 +1,14 @@
 package ImageFilters
 import Images.ASCIIArt
 
-class InvertFilter extends ImageFilter {
+class BrightnessFilter(val brightness: Int) extends ImageFilter {
   override def EditImage(image: ASCIIArt): ASCIIArt = {
-    val values : Vector[Vector[Int]] =
+    val values: Vector[Vector[Int]] =
       (0 until image.height).map(y =>
         (0 until image.width).map(x =>
-          255 - image.GetValueAt(x,y)).toVector).toVector
+          (image.GetValueAt(x,y) + brightness).max(0).min(255)
+        ).toVector
+      ).toVector
     new ASCIIArt(values, image.GetShader())
   }
 }

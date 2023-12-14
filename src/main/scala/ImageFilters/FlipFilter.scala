@@ -10,7 +10,9 @@ class FlipFilter(flipX : Boolean) extends ImageFilter {
             image.GetValueAt(x, image.height - y - 1)
           } else {
             image.GetValueAt(image.width - x - 1, y)
-          }).toVector).toVector
+          }
+        ).toVector
+      ).toVector
     new ASCIIArt(value, image.GetShader())
   }
 }
