@@ -5,10 +5,10 @@ import org.scalatest.FunSuite
 
 class InvertFilterTest extends ImageFilterTest(new InvertFilter) {
   test("InvertFilterTest"){
-    val values : Vector[Vector[Int]] = Vector(
-      Vector(255,255,255),
-      Vector(255,128,0),
-      Vector(0,0,0)
+    val values : Seq[Seq[Int]] = Seq(
+      Seq(255,255,255),
+      Seq(255,128,0),
+      Seq(0,0,0)
     )
     val shader: Map[Range, Char] = Map(
       (0 until 50) -> 'X',
@@ -19,19 +19,19 @@ class InvertFilterTest extends ImageFilterTest(new InvertFilter) {
     val filter = new InvertFilter()
     val invertImage = filter.EditImage(orgImage)
 
-    val expectedRes = Vector(
-      Vector('X','X','X'),
-      Vector('X','I','O'),
-      Vector('O','O','O')
+    val expectedRes = Seq(
+      "XXX",
+      "XIO",
+      "OOO"
     )
-    assert((0 until 3).forall(y => expectedRes(y).equals(invertImage.GetRow(y))))
+    assert((0 until 3).forall(y => expectedRes(y).equals(invertImage.GetLineAt(y))))
   }
 
   test("InvertFilterTestDoubleInvert") {
-    val values: Vector[Vector[Int]] = Vector(
-      Vector(255, 255, 255),
-      Vector(255, 128, 0),
-      Vector(0, 0, 0)
+    val values: Seq[Seq[Int]] = Seq(
+      Seq(255, 255, 255),
+      Seq(255, 128, 0),
+      Seq(0, 0, 0)
     )
     val shader: Map[Range, Char] = Map(
       (0 until 50) -> 'X',
@@ -43,11 +43,11 @@ class InvertFilterTest extends ImageFilterTest(new InvertFilter) {
     val res1 = filter.EditImage(orgImage)
     val res2 = filter.EditImage(res1)
 
-    val expectedRes = Vector(
-      Vector('O', 'O', 'O'),
-      Vector('O', 'I', 'X'),
-      Vector('X', 'X', 'X')
+    val expectedRes = Seq(
+      "OOO",
+      "OIX",
+      "XXX"
     )
-    assert((0 until 3).forall(y => expectedRes(y).equals(res2.GetRow(y))))
+    assert((0 until 3).forall(y => expectedRes(y).equals(res2.GetLineAt(y))))
   }
 }

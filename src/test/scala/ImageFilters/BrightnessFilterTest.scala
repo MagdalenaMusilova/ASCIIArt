@@ -5,8 +5,8 @@ import org.scalatest.FunSuite
 
 class BrightnessFilterTest extends ImageFilterTest(new BrightnessFilter(5)) {
   test("BrightnessFilterTest") {
-    val values: Vector[Vector[Int]] = Vector(
-      Vector(0, 120, 128, 130, 250, 255),
+    val values: Seq[Seq[Int]] = Seq(
+      Seq(0, 120, 128, 130, 250, 255),
     )
     val shader: Map[Range, Char] = Map(
       (0 until 128) -> 'X',
@@ -19,15 +19,15 @@ class BrightnessFilterTest extends ImageFilterTest(new BrightnessFilter(5)) {
     val brightImage = brightFilter.EditImage(orgImage)
     val darkImage = darkFilter.EditImage(orgImage)
 
-    val expectedBrightRes = Vector('X', 'I', 'I', 'I', 'O', 'O')
-    val expectedDarkRes = Vector('X', 'X', 'X', 'X', 'I', 'I')
-    assert(expectedBrightRes.equals(brightImage.GetRow(0)))
-    assert(expectedDarkRes.equals(darkImage.GetRow(0)))
+    val expectedBrightRes = "XIIIOO"
+    val expectedDarkRes = "XXXXII"
+    assert(expectedBrightRes.equals(brightImage.GetLineAt(0)))
+    assert(expectedDarkRes.equals(darkImage.GetLineAt(0)))
   }
 
   test("BrightnessFilterTestZeroValue"){
-    val values: Vector[Vector[Int]] = Vector(
-      Vector(0, 120, 128, 130, 250, 255),
+    val values: Seq[Seq[Int]] = Seq(
+      Seq(0, 120, 128, 130, 250, 255),
     )
     val shader: Map[Range, Char] = Map(
       (0 until 128) -> 'X',

@@ -27,7 +27,7 @@ class ConsoleView(input : Input, output : Output) {
     }
   }
 
-  private def GroupTextInput(textInput: Vector[String]): Vector[Vector[String]] = {
+  private def GroupTextInput(textInput: Seq[String]): Seq[Seq[String]] = {
     val res = new ArrayBuffer[ArrayBuffer[String]]()
     textInput.foreach(word =>
       if (word.startsWith("--")) {
@@ -38,10 +38,10 @@ class ConsoleView(input : Input, output : Output) {
         throw new Exception("Unknown argument")
       }
     )
-    res.map(x => x.toVector).toVector
+    res.map(i => i.toSeq).toSeq
   }
 
-  private def GetInputType(commands: Vector[Vector[String]]): CommandType = {
+  private def GetInputType(commands: Seq[Seq[String]]): CommandType = {
     if (commands.isEmpty) {
       throw new Exception("No input")
     }
@@ -59,14 +59,14 @@ class ConsoleView(input : Input, output : Output) {
     controller.ShowHelp()
   }
 
-  private def ConvertImage(textInput: Vector[Vector[String]]): Unit = {
+  private def ConvertImage(textInput: Seq[Seq[String]]): Unit = {
     val command = LoadConvertImageInput(textInput)
     controller.ConvertImage(command)
   }
 
-  private def SortConvertImageInput(textCommands: Vector[Vector[String]])
-  : Map[ConvertImageCommandType, Vector[Vector[String]]] = {
-    val res: Map[ConvertImageCommandType, ArrayBuffer[Vector[String]]] = Map(
+  private def SortConvertImageInput(textCommands: Seq[Seq[String]])
+  : Map[ConvertImageCommandType, Seq[Seq[String]]] = {
+    val res: Map[ConvertImageCommandType, ArrayBuffer[Seq[String]]] = Map(
       LOADER -> ArrayBuffer(),
       EXPORTER -> ArrayBuffer(),
       CONVERTOR -> ArrayBuffer(),
@@ -79,10 +79,10 @@ class ConsoleView(input : Input, output : Output) {
       }
       res(tmp.get._1) += text
     })
-    res.map(a => a._1 -> a._2.map(b => b.toVector).toVector)
+    res.map(a => a._1 -> a._2.map(b => b.toSeq).toSeq)
   }
 
-  private def LoadConvertImageInput(textCommands: Vector[Vector[String]]): ConvertImageData = {
+  private def LoadConvertImageInput(textCommands: Seq[Seq[String]]): ConvertImageData = {
     val sortedCommands = SortConvertImageInput(textCommands)
     val convertImageData = new ConvertImageData
     LoadLoader(sortedCommands(LOADER), convertImageData)
@@ -92,7 +92,7 @@ class ConsoleView(input : Input, output : Output) {
     convertImageData
   }
 
-  private def LoadLoader(textCommands: Vector[Vector[String]], commandData: ConvertImageData): Unit = {
+  private def LoadLoader(textCommands: Seq[Seq[String]], commandData: ConvertImageData): Unit = {
     if (textCommands.isEmpty) {
       throw new Exception("No image loaders")
     }
@@ -123,7 +123,7 @@ class ConsoleView(input : Input, output : Output) {
     }
   }
 
-  private def LoadExporters(textCommands: Vector[Vector[String]], commandData: ConvertImageData): Unit = {
+  private def LoadExporters(textCommands: Seq[Seq[String]], commandData: ConvertImageData): Unit = {
     if (textCommands.isEmpty) {
       throw new Exception("No image exporter")
     }
@@ -147,7 +147,7 @@ class ConsoleView(input : Input, output : Output) {
     instance.toString.replace("asciiconvertor", "")
   }
 
-  private def LoadConverter(textCommands: Vector[Vector[String]], commandData: ConvertImageData): Unit = {
+  private def LoadConverter(textCommands: Seq[Seq[String]], commandData: ConvertImageData): Unit = {
     if (textCommands.size > 1) {
       throw new Exception("Too many ASCII convertors")
     }
@@ -199,7 +199,7 @@ class ConsoleView(input : Input, output : Output) {
     true
   }
 
-  private def LoadFilter(textCommands: Vector[Vector[String]], commandData: ConvertImageData): Unit = {
+  private def LoadFilter(textCommands: Seq[Seq[String]], commandData: ConvertImageData): Unit = {
     textCommands.foreach(textCom => {
       val command = controller.CICommandsByType(FILTER).find(x => x.command == textCom.head).get
       if (textCom.size - 1 != command.arguments.size) {

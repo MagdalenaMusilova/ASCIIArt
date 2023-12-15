@@ -6,10 +6,10 @@ import scala.collection.immutable.Map
 
 class ASCIIArtTest extends FunSuite{
   test("ASCIIArtTest") {
-    val values : Vector[Vector[Int]] =
+    val values : Seq[Seq[Int]] =
       (0 until 16)
         .map(y => (0 until 16)
-          .map(x => y*16+x).toVector).toVector
+          .map(x => y*16+x))
     val shader : Map[Range, Char] = Map(
       (150 until 151) -> '3',
       (10 until 100) -> '1',
@@ -26,9 +26,9 @@ class ASCIIArtTest extends FunSuite{
   }
 
   test("ASCIIArtTestZigZagImage"){
-    val values = Vector(
-      Vector(0, 255, 200),
-      Vector(0, 100)
+    val values = Seq(
+      Seq(0, 255, 200),
+      Seq(0, 100)
     )
     val shader = Map((0 until 256) -> 'X')
     intercept[Exception] {
@@ -37,9 +37,9 @@ class ASCIIArtTest extends FunSuite{
   }
 
   test("ASCIIArtTestOverlapping"){
-    val values = Vector(
-      Vector(0, 255, 200),
-      Vector(0, 100)
+    val values = Seq(
+      Seq(0, 255, 200),
+      Seq(0, 100)
     )
     val shader = Map(
       (0 until 100) -> 'O',
@@ -52,9 +52,9 @@ class ASCIIArtTest extends FunSuite{
   }
 
   test("ASCIIArtTestMissingValues") {
-    val values = Vector(
-      Vector(0, 255, 200),
-      Vector(0, 100)
+    val values = Seq(
+      Seq(0, 255, 200),
+      Seq(0, 100)
     )
     val shader = Map(
       (0 until 100) -> 'O',
@@ -67,9 +67,9 @@ class ASCIIArtTest extends FunSuite{
   }
 
   test("ASCIIArtTestInvalidValues"){
-    val values = Vector(
-      Vector(0, 255, 200),
-      Vector(0, 100)
+    val values = Seq(
+      Seq(0, 255, 200),
+      Seq(0, 100)
     )
     val shaderNeg = Map(
       (-10 until 100) -> 'O',
@@ -98,10 +98,10 @@ class ASCIIArtTest extends FunSuite{
   }
 
   test("ASCIIArtTestInvalidIndex"){
-    val values = Vector(
-      Vector(0, 100, 200),
-      Vector(123, 150, 250),
-      Vector(255, 10, 20)
+    val values = Seq(
+      Seq(0, 100, 200),
+      Seq(123, 150, 250),
+      Seq(255, 10, 20)
     )
     val shader = Map(
       (0 until 100) -> 'X',

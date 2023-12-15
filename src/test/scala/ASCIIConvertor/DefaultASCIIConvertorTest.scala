@@ -7,10 +7,10 @@ trait DefaultASCIIConvertorTest extends FunSuite{
   protected def runTest(convertor : ASCIIConvertor, shader : String){
     val expectedRes = shader + " "
 
-    val values: Vector[RGBColor] = (0 to shader.length)
+    val values = (0 to shader.length)
       .map(i => 255.min((i * (256d / shader.length)).toInt))
-      .map(j => RGBColor(j, j, j)).toVector
-    val image = new BitmapImage(Vector(values))
+      .map(j => RGBColor(j, j, j))
+    val image = new BitmapImage(Seq(values))
     val res = convertor.GetASCIIArt(image)
     val stringRes = (0 until res.width).map(x => res.GetAt(x, 0)).mkString("")
     assert(expectedRes.length == res.width && res.height == 1)

@@ -5,15 +5,15 @@ import org.scalatest.FunSuite
 
 class ScaleFilterTest extends ImageFilterTest(new ScaleFilter(4)) {
   test("ScaleFilterTest") {
-    val bigValues: Vector[Vector[Int]] = Vector(
-      Vector(255, 255, 255, 255),
-      Vector(255, 255, 0,   200),
-      Vector(128, 0, 255, 10),
-      Vector(0, 128, 255, 10)
+    val bigValues: Seq[Seq[Int]] = Seq(
+      Seq(255, 255, 255, 255),
+      Seq(255, 255, 0,   200),
+      Seq(128, 0, 255, 10),
+      Seq(0, 128, 255, 10)
     )
-    val smallValues: Vector[Vector[Int]] = Vector(
-      Vector(0,   128),
-      Vector(130, 255)
+    val smallValues: Seq[Seq[Int]] = Seq(
+      Seq(0,   128),
+      Seq(130, 255)
     )
     val shader: Map[Range, Char] = Map(
       (0 until 128) -> 'X',
@@ -27,30 +27,30 @@ class ScaleFilterTest extends ImageFilterTest(new ScaleFilter(4)) {
     val shrunkenImage = shrinkFilter.EditImage(bigImage)
     val scaledImage = scaleFilter.EditImage(smallImage)
 
-    val shrunkenRes = Vector(
-      Vector('O', 'I'),
-      Vector('X', 'I')
+    val shrunkenRes = Seq(
+      "OI",
+      "XI"
     )
-    val scaledRes = Vector(
-      Vector('X', 'X', 'X', 'X', 'I', 'I', 'I', 'I'),
-      Vector('X', 'X', 'X', 'X', 'I', 'I', 'I', 'I'),
-      Vector('X', 'X', 'X', 'X', 'I', 'I', 'I', 'I'),
-      Vector('X', 'X', 'X', 'X', 'I', 'I', 'I', 'I'),
-      Vector('I', 'I', 'I', 'I', 'O', 'O', 'O', 'O'),
-      Vector('I', 'I', 'I', 'I', 'O', 'O', 'O', 'O'),
-      Vector('I', 'I', 'I', 'I', 'O', 'O', 'O', 'O'),
-      Vector('I', 'I', 'I', 'I', 'O', 'O', 'O', 'O'),
+    val scaledRes = Seq(
+      "XXXXIIII",
+      "XXXXIIII",
+      "XXXXIIII",
+      "XXXXIIII",
+      "IIIIOOOO",
+      "IIIIOOOO",
+      "IIIIOOOO",
+      "IIIIOOOO",
     )
     assert(shrunkenImage.height == shrunkenRes.length)
-    assert((0 until shrunkenImage.height).forall(y => shrunkenRes(y).equals(shrunkenImage.GetRow(y))))
+    assert((0 until shrunkenImage.height).forall(y => shrunkenRes(y).equals(shrunkenImage.GetLineAt(y))))
     assert(scaledImage.height == scaledRes.length)
-    assert((0 until scaledImage.height).forall(y => scaledRes(y).equals(scaledImage.GetRow(y))))
+    assert((0 until scaledImage.height).forall(y => scaledRes(y).equals(scaledImage.GetLineAt(y))))
   }
 
   test("ScaleFilterTestFail"){
-    val values: Vector[Vector[Int]] = Vector(
-      Vector(0, 128),
-      Vector(130, 255)
+    val values: Seq[Seq[Int]] = Seq(
+      Seq(0, 128),
+      Seq(130, 255)
     )
     val shader: Map[Range, Char] = Map(
       (0 until 128) -> 'X',
@@ -69,9 +69,9 @@ class ScaleFilterTest extends ImageFilterTest(new ScaleFilter(4)) {
   }
 
   test("ScaleFilterTestShrinkScale") {
-    val values: Vector[Vector[Int]] = Vector(
-      Vector(0, 130),
-      Vector(130, 255)
+    val values: Seq[Seq[Int]] = Seq(
+      Seq(0, 130),
+      Seq(130, 255)
     )
     val shader: Map[Range, Char] = Map(
       (0 until 128) -> 'X',
@@ -84,15 +84,15 @@ class ScaleFilterTest extends ImageFilterTest(new ScaleFilter(4)) {
     val res1 = scaleFilter.EditImage(img)
     val res = shrinkFilter.EditImage(res1)
 
-    val expectedRes = Vector(
-      Vector('X', 'X', 'I', 'I'),
-      Vector('X', 'X', 'I', 'I'),
-      Vector('I', 'I', 'O', 'O'),
-      Vector('I', 'I', 'O', 'O')
+    val expectedRes = Seq(
+      "XXII",
+      "XXII",
+      "IIOO",
+      "IIOO"
     )
     assert(res.width == expectedRes.head.length &&
         res.height == expectedRes.length)
     assert((0 until res.height).forall(y =>
-      res.GetRow(y).equals(expectedRes(y))))
+      res.GetLineAt(y).equals(expectedRes(y))))
   }
 }

@@ -1,19 +1,19 @@
 package ASCIIConvertor
 
 import Images.{ASCIIArt, BitmapImage, RGBColor}
-import org.scalatest.FunSuite
+import org.scalatest.{FunSuite, ScalaTestVersion}
 
 class RangeASCIIConvertorTest extends FunSuite{
   test("RangeASCIIConvertorTest") {
     val white : RGBColor = new RGBColor(255,255,255)
     val grey : RGBColor = new RGBColor(128,128,128)
     val black : RGBColor = new RGBColor(0,0,0)
-    val values: Vector[Vector[RGBColor]] = Vector(
-      Vector(black,grey,black,grey,black),
-      Vector(white,grey,black,grey,white),
-      Vector(white,grey,white,grey,white),
-      Vector(black,white,grey,white,black),
-      Vector(black,grey,white,white,black)
+    val values = Seq(
+      Seq(black,grey,black,grey,black),
+      Seq(white,grey,black,grey,white),
+      Seq(white,grey,white,grey,white),
+      Seq(black,white,grey,white,black),
+      Seq(black,grey,white,white,black)
     )
     val bitmap = new BitmapImage(values)
     val shader: Map[Range, Char] = Map(
@@ -24,12 +24,12 @@ class RangeASCIIConvertorTest extends FunSuite{
     val convertor : RangeASCIIConvertor = new RangeASCIIConvertor(shader)
     val res = convertor.GetASCIIArt(bitmap)
 
-    val expectedRes : Vector[Vector[Char]] = Vector(
-      Vector('X','I','X','I','X'),
-      Vector('O','I','X','I','O'),
-      Vector('O','I','O','I','O'),
-      Vector('X','O','I','O','X'),
-      Vector('X','I','O','O','X')
+    val expectedRes = Seq(
+      Seq('X','I','X','I','X'),
+      Seq('O','I','X','I','O'),
+      Seq('O','I','O','I','O'),
+      Seq('X','O','I','O','X'),
+      Seq('X','I','O','O','X')
     )
     assert(
       (0 until 5).forall(y =>
@@ -39,7 +39,7 @@ class RangeASCIIConvertorTest extends FunSuite{
   }
 
   test("RangeASCIIConvertorTestInvalidShader") {
-    val image = new BitmapImage(Vector(Vector(RGBColor(0, 0, 0))))
+    val image = new BitmapImage(Seq(Seq(RGBColor(0, 0, 0))))
     val notCoveringShader = Map(
       (0 until 100) -> 'O',
       (100 until 230) -> 'X'
@@ -69,7 +69,7 @@ class RangeASCIIConvertorTest extends FunSuite{
   }
 
   test("RangeASCIIConvertorTestEmptyImage") {
-    val image = new BitmapImage(Vector())
+    val image = new BitmapImage(Seq())
     val shader = Map(
       (0 until 256) -> 'X'
     )

@@ -1,9 +1,9 @@
 package Images
 
-class ASCIIArt(value : Vector[Vector[Int]], shader : Map[Range, Char]) {
-  private val shadeScale : Vector[Char] = {
+class ASCIIArt(value : Seq[Seq[Int]], shader : Map[Range, Char]) {
+  private val shadeScale : Seq[Char] = {
     (0 until 256)
-      .map(a => shader.find(b => b._1.contains(a)).head._2).toVector
+      .map(a => shader.find(b => b._1.contains(a)).head._2)
   }
 
   def height: Int = {
@@ -36,6 +36,10 @@ class ASCIIArt(value : Vector[Vector[Int]], shader : Map[Range, Char]) {
 
   def GetAt(x : Int, y : Int) : Char = {
     shadeScale(GetValueAt(x,y))
+  }
+
+  def GetLineAt(y: Int) : String = {
+    (0 until width).map(x => GetAt(x,y)).mkString("")
   }
 
   override def equals(b : Any): Boolean = {

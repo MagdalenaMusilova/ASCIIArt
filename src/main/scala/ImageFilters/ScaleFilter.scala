@@ -10,7 +10,7 @@ class ScaleFilter(scale : Double) extends ImageFilter {
       (0 until image.width/2).map(x =>
         (image.GetValueAt(x*2,y*2) + image.GetValueAt(x*2+1,y*2) +
           image.GetValueAt(x*2,y*2+1) + image.GetValueAt(x*2+1,y*2+1))/4
-      ).toVector).toVector
+      ))
     new ASCIIArt(values, image.GetShader())
   }
 
@@ -18,7 +18,7 @@ class ScaleFilter(scale : Double) extends ImageFilter {
     val values =
       (0 until image.height*2).map(y =>
         (0 until image.width*2).map(x =>
-          image.GetValueAt(x/2, y/2)).toVector).toVector
+          image.GetValueAt(x/2, y/2)))
     new ASCIIArt(values, image.GetShader())
   }
 

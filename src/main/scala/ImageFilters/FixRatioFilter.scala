@@ -7,8 +7,8 @@ class FixRatioFilter extends ImageFilter {
     (0 until image.height).map(y =>
       (0 until image.width*2).map(x =>
         image.GetValueAt(x/2, y)
-      ).toVector
-    ).toVector
+      )
+    )
     new ASCIIArt(values, image.GetShader())
   }
 }

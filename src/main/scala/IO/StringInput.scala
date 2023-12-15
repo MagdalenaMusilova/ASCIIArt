@@ -5,7 +5,7 @@ import scala.collection.mutable.ArrayBuffer
 class StringInput extends Input {
   private val values: ArrayBuffer[String] = ArrayBuffer()
 
-  def WriteLine(text : Vector[String]): Unit = {
+  def WriteLine(text : Seq[String]): Unit = {
     values.addAll(text)
   }
 
@@ -13,7 +13,7 @@ class StringInput extends Input {
     values.addOne(text)
   }
 
-  override def ReadInputArgs(): Vector[String] = {
-    values.toVector
+  override def ReadInputArgs(): Seq[String] = {
+    values.toSeq
   }
 }

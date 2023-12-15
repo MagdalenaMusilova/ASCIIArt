@@ -5,7 +5,7 @@ import org.scalatest.FunSuite
 class StringOutputTest extends FunSuite{
   test("StringOutputTest") {
     val out = new StringOutput
-    val jokes = Vector(
+    val jokes = Seq(
       "Why did the programmer quit their job? They didn't get arrays of opportunities.",
       "How do you comfort a JavaScript bug? You console it.",
       "Why was the programming language so good at networking? It had great connections.",

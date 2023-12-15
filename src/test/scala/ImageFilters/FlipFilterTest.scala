@@ -5,9 +5,9 @@ import org.scalatest.FunSuite
 
 class FlipFilterTest extends ImageFilterTest(new FlipFilter(true)) {
   test("FlipFilterTest") {
-    val values: Vector[Vector[Int]] = Vector(
-      Vector(0, 100),
-      Vector(150,200)
+    val values: Seq[Seq[Int]] = Seq(
+      Seq(0, 100),
+      Seq(150,200)
     )
     val shader: Map[Range, Char] = Map(
       (0 until 50) -> 'A',
@@ -21,23 +21,23 @@ class FlipFilterTest extends ImageFilterTest(new FlipFilter(true)) {
     val invertImageX = filterX.EditImage(orgImage)
     val invertImageY = filterY.EditImage(orgImage)
 
-    val expectedResX = Vector(
-      Vector('C', 'D'),
-      Vector('A', 'B')
+    val expectedResX = Seq(
+      "CD",
+      "AB"
     )
-    val expectedResY = Vector(
-      Vector('B', 'A'),
-      Vector('D', 'C')
+    val expectedResY = Seq(
+      "BA",
+      "DC"
     )
-    assert((0 until 2).forall(y => expectedResX(y).equals(invertImageX.GetRow(y))))
-    assert((0 until 2).forall(y => expectedResY(y).equals(invertImageY.GetRow(y))))
+    assert((0 until 2).forall(y => expectedResX(y).equals(invertImageX.GetLineAt(y))))
+    assert((0 until 2).forall(y => expectedResY(y).equals(invertImageY.GetLineAt(y))))
   }
 
   test("FlipFilterTestDoubleFlip") {
-    val values: Vector[Vector[Int]] = Vector(
-      Vector(0, 100, 100),
-      Vector(150, 200, 200),
-      Vector(150, 0, 200),
+    val values: Seq[Seq[Int]] = Seq(
+      Seq(0, 100, 100),
+      Seq(150, 200, 200),
+      Seq(150, 0, 200),
     )
     val shader: Map[Range, Char] = Map(
       (0 until 50) -> 'A',

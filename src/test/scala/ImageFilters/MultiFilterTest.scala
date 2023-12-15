@@ -5,10 +5,10 @@ import org.scalatest.FunSuite
 
 class MultiFilterTest extends ImageFilterTest(new MultiFilter(new FlipFilter(true), new InvertFilter())) {
   test("MultiFilterTest") {
-    val values: Vector[Vector[Int]] = Vector(
-      Vector(255, 255, 255),
-      Vector(255, 128, 0),
-      Vector(0, 0, 0)
+    val values: Seq[Seq[Int]] = Seq(
+      Seq(255, 255, 255),
+      Seq(255, 128, 0),
+      Seq(0, 0, 0)
     )
     val shader: Map[Range, Char] = Map(
       (0 until 50) -> 'X',
@@ -26,19 +26,19 @@ class MultiFilterTest extends ImageFilterTest(new MultiFilter(new FlipFilter(tru
           new MultiFilter(filter1, filter0)))
     val invertImage = filter.EditImage(orgImage)
 
-    val expectedRes = Vector(
-      Vector('O', 'O', 'O'),
-      Vector('O', 'I', 'X'),
-      Vector('X', 'X', 'X')
+    val expectedRes = Seq(
+      "OOO",
+      "OIX",
+      "XXX"
     )
-    assert((0 until 3).forall(y => expectedRes(y).equals(invertImage.GetRow(y))))
+    assert((0 until 3).forall(y => expectedRes(y).equals(invertImage.GetLineAt(y))))
   }
 
   test("MultiFilterTestNullified"){
-    val values: Vector[Vector[Int]] = Vector(
-      Vector(255, 255, 255),
-      Vector(255, 128, 0),
-      Vector(0, 0, 0)
+    val values: Seq[Seq[Int]] = Seq(
+      Seq(255, 255, 255),
+      Seq(255, 128, 0),
+      Seq(0, 0, 0)
     )
     val shader: Map[Range, Char] = Map(
       (0 until 50) -> 'X',

@@ -9,10 +9,10 @@ import scala.io.Source
 
 class MultiImageExporterTest extends FunSuite {
   test("MultiImageExporterTest") {
-    val values: Vector[Vector[Int]] = Vector(
-      Vector(0, 100, 0),
-      Vector(100, 200, 100),
-      Vector(0, 100, 200)
+    val values: Seq[Seq[Int]] = Seq(
+      Seq(0, 100, 0),
+      Seq(100, 200, 100),
+      Seq(0, 100, 200)
     )
     val shader: Map[Range, Char] = Map(
       (0 until 50) -> 'O',
@@ -30,14 +30,14 @@ class MultiImageExporterTest extends FunSuite {
         new MultiImageExporter(saver2, saver1))
     saver.Export(image)
 
-    val expectedRes: Vector[String] = Vector(
+    val expectedRes: Seq[String] = Seq(
       "OIO",
       "IXI",
       "OIX"
     )
     //check file exporter
     val source = Source.fromFile("tmp.txt")
-    val res = source.getLines.toVector
+    val res = source.getLines.toSeq
     source.close()
     new File("tmp.txt").delete()
     assert(res.equals(expectedRes))
@@ -48,7 +48,7 @@ class MultiImageExporterTest extends FunSuite {
   }
 
   test("MultiImageExporterTestEmptyImage"){
-    val values: Vector[Vector[Int]] = Vector(Vector())
+    val values: Seq[Seq[Int]] = Seq(Seq())
     val shader: Map[Range, Char] = Map((0 until 256) -> 'O')
     val image: ASCIIArt = new ASCIIArt(values, shader)
     val output1 = new StringOutput
@@ -64,7 +64,7 @@ class MultiImageExporterTest extends FunSuite {
   }
 
   test("MultiImageExporterTestInvalidExporter"){
-    val values: Vector[Vector[Int]] = Vector(Vector())
+    val values: Seq[Seq[Int]] = Seq(Seq())
     val shader: Map[Range, Char] = Map((0 until 256) -> 'O')
     val image: ASCIIArt = new ASCIIArt(values, shader)
     val output1 = new StringOutput

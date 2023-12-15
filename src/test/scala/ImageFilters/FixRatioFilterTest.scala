@@ -4,10 +4,10 @@ import Images.ASCIIArt
 
 class FixRatioFilterTest extends ImageFilterTest(new FixRatioFilter) {
   test("FixRatioFilterTest") {
-    val values: Vector[Vector[Int]] = Vector(
-      Vector(255, 255, 128),
-      Vector(130, 130, 130),
-      Vector(0, 0, 255)
+    val values: Seq[Seq[Int]] = Seq(
+      Seq(255, 255, 128),
+      Seq(130, 130, 130),
+      Seq(0, 0, 255)
     )
     val shader: Map[Range, Char] = Map(
       (0 until 128) -> 'X',
@@ -18,14 +18,15 @@ class FixRatioFilterTest extends ImageFilterTest(new FixRatioFilter) {
     val filter = new FixRatioFilter
     val res = filter.EditImage(orgImage)
 
-    val expectedRes = Vector(
-      Vector('O', 'O', 'O', 'O', 'I', 'I'),
-      Vector('I', 'I', 'I', 'I', 'I', 'I'),
-      Vector('X', 'X', 'X', 'X', 'O', 'O')
+    val expectedRes = Seq(
+      "OOOOII",
+      "IIIIII",
+      "XXXXOO"
     )
     assert(res.height == expectedRes.length &&
           res.width == expectedRes.head.length)
-    val resss = (0 until res.height).map(y => (0 until res.width).map(x => res.GetAt(x,y)).toVector.mkString(""))
-    assert((0 until res.height).forall(y => res.GetRow(y).equals(expectedRes(y))))
+    assert((0 until res.height).forall(y =>
+      res.GetLineAt(y).equals(expectedRes(y))
+    ))
   }
 }

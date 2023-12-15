@@ -9,10 +9,10 @@ import scala.io.Source
 
 class OutputImageExporterTest extends FunSuite{
   test("OutputImageExporterTest") {
-    val values: Vector[Vector[Int]] = Vector(
-      Vector(0, 100, 0),
-      Vector(100, 200, 100),
-      Vector(0, 100, 200)
+    val values: Seq[Seq[Int]] = Seq(
+      Seq(0, 100, 0),
+      Seq(100, 200, 100),
+      Seq(0, 100, 200)
     )
     val shader: Map[Range, Char] = Map(
       (0 until 50) -> 'O',
@@ -24,7 +24,7 @@ class OutputImageExporterTest extends FunSuite{
     val saver: OutputImageExporter = new OutputImageExporter(output)
     saver.Export(image)
 
-    val expectedRes: Vector[String] = Vector(
+    val expectedRes: Seq[String] = Seq(
       "OIO",
       "IXI",
       "OIX"
@@ -34,7 +34,7 @@ class OutputImageExporterTest extends FunSuite{
   }
 
   test("OutputImageExporterTestEmptyImage") {
-    val values: Vector[Vector[Int]] = Vector(Vector())
+    val values: Seq[Seq[Int]] = Seq(Seq())
     val shader: Map[Range, Char] = Map((0 until 256) -> 'O')
     val image: ASCIIArt = new ASCIIArt(values, shader)
     val output = new StringOutput

@@ -17,12 +17,12 @@ class RandomImageLoader extends ImageLoader {
   override def Get(): BitmapImage = {
     val height = rnd.nextInt().abs % (MaxHeight-MinHeight) + MinHeight
     val width = rnd.nextInt().abs % (MaxWidth-MinWidth) + MinWidth
-    val res : Vector[Vector[RGBColor]] =
+    val res : Seq[Seq[RGBColor]] =
       (0 until height).map(y =>
         (0 until width). map(x =>
           RandomColor()
-        ).toVector
-      ).toVector
+        )
+      )
     new BitmapImage(res)
   }
 }

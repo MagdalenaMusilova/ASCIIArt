@@ -8,10 +8,10 @@ import scala.io.Source
 
 class FileImageExporterTest extends FunSuite{
   test("FileImageExporterTest") {
-    val values : Vector[Vector[Int]] = Vector(
-      Vector(0, 100, 0),
-      Vector(100, 200, 100),
-      Vector(0, 100, 200)
+    val values : Seq[Seq[Int]] = Seq(
+      Seq(0, 100, 0),
+      Seq(100, 200, 100),
+      Seq(0, 100, 200)
     )
     val shader : Map[Range, Char] = Map(
       (0 until 50) -> 'O',
@@ -22,21 +22,24 @@ class FileImageExporterTest extends FunSuite{
     val saver : FileImageExporter = new FileImageExporter( "tmp.txt")
     saver.Export(image)
 
-    val expectedRes : Vector[String] = Vector(
+    val expectedRes : Seq[String] = Seq(
       "OIO",
       "IXI",
       "OIX"
     )
     val source = Source.fromFile("tmp.txt")
-    val res = source.getLines.toVector
+    val res = source.getLines.toSeq
     source.close()
     new File("tmp.txt").delete()
 
-    assert(res.equals(expectedRes))
+    assert(res.length == expectedRes.length)
+    assert((0 until res.length).forall(y =>
+      res(y).equals(expectedRes(y))
+    ))
   }
 
   test("FileImageExporterTestCorruptedFile") {
-    val img = new ASCIIArt(Vector(Vector(0,1)), Map((0 until 256) -> 'X'))
+    val img = new ASCIIArt(Seq(Seq(0,1)), Map((0 until 256) -> 'X'))
     val exporter = new FileImageExporter("\\/@")
     intercept[Exception](
       exporter.Export(img)
@@ -44,17 +47,17 @@ class FileImageExporterTest extends FunSuite{
   }
 
   test("FileImageExporterTestEmptyImage") {
-    val values: Vector[Vector[Int]] = Vector(Vector())
+    val values: Seq[Seq[Int]] = Seq(Seq())
     val shader: Map[Range, Char] = Map((0 until 256) -> 'O')
     val image: ASCIIArt = new ASCIIArt(values, shader)
     val saver: FileImageExporter = new FileImageExporter("tmp.txt")
     saver.Export(image)
 
     val source = Source.fromFile("tmp.txt")
-    val res = source.getLines.toVector
+    val res = source.getLines.toSeq
     source.close()
     new File("tmp.txt").delete()
 
-    assert(res.length == 0)
+    assert(res.isEmpty)
   }
 }

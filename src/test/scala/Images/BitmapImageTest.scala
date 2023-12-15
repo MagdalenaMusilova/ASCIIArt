@@ -4,9 +4,9 @@ import org.scalatest.FunSuite
 
 class BitmapImageTest extends FunSuite{
   test("BitmapImageTestSuccess") {
-    val values = Vector(
-      Vector(RGBColor(0,0,0), RGBColor(5,100,244)),
-      Vector(RGBColor(255,255,255), RGBColor(255,100,0))
+    val values = Seq(
+      Seq(RGBColor(0,0,0), RGBColor(5,100,244)),
+      Seq(RGBColor(255,255,255), RGBColor(255,100,0))
     )
     val img = new BitmapImage(values)
     assert(img.height == values.length && img.width == values.head.length)
@@ -18,9 +18,9 @@ class BitmapImageTest extends FunSuite{
   }
 
   test("BitmapImageTestFail") {
-    val values = Vector(
-      Vector(RGBColor(0, 0, 0), RGBColor(5, 100, 244)),
-      Vector(RGBColor(255, 255, 255))
+    val values = Seq(
+      Seq(RGBColor(0, 0, 0), RGBColor(5, 100, 244)),
+      Seq(RGBColor(255, 255, 255))
     )
     intercept[Exception] {
       new BitmapImage(values)
@@ -30,10 +30,10 @@ class BitmapImageTest extends FunSuite{
   test("BitmapImageTestInvalidIndex") {
     val black = RGBColor(0,0,0)
     val white = RGBColor(255,255,255)
-    val values = Vector(
-      Vector(black, white, white),
-      Vector(black, white, black),
-      Vector(black, black, white)
+    val values = Seq(
+      Seq(black, white, white),
+      Seq(black, white, black),
+      Seq(black, black, white)
     )
     val img = new BitmapImage(values)
     intercept[Exception] {

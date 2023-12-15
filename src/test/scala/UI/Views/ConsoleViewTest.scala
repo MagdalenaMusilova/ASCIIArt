@@ -18,16 +18,16 @@ class ConsoleViewTest extends FunSuite with TimeLimitedTests{
     val output = new StringOutput
     val consoleView = new ConsoleView(input, output)
 
-    input.WriteLine(Vector("--image", "loaderTest2.png", "--output-file", "tmp.txt", "--custom-table", "XIO", "--invert"))
+    input.WriteLine(Seq("--image", "loaderTest2.png", "--output-file", "tmp.txt", "--custom-table", "XIO", "--invert"))
 
     consoleView.Start()
 
     val source = Source.fromFile("tmp.txt")
-    val res = source.getLines.toVector
+    val res = source.getLines.toSeq
     source.close()
     new File("tmp.txt").delete()
 
-    val expectedRes = Vector(
+    val expectedRes = Seq(
       "XOI",
       "OXO",
       "IIX"

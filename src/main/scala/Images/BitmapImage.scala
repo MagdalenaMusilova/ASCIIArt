@@ -1,6 +1,6 @@
 package Images
 
-class BitmapImage(value : Vector[Vector[RGBColor]]){
+class BitmapImage(value : Seq[Seq[RGBColor]]){
   def height : Int = value.length
   def width : Int = {
     if (value.isEmpty){

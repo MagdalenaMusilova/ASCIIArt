@@ -7,8 +7,8 @@ class RotateFilter(degree: Int) extends ImageFilter{
     (0 until  image.width).map(y =>
       (0 until image.height).map(x =>
         image.GetValueAt(y, image.height-x-1)
-      ).toVector
-    ).toVector
+      )
+    )
     new ASCIIArt(values, image.GetShader())
   }
 

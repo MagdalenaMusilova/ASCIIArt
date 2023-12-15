@@ -5,7 +5,7 @@ import scala.io.Source
 class FileShaderLoader(filePath: String) extends ShaderLoader {
   override def Get(): Map[Range, Char] = {
     val source = Source.fromFile(filePath)
-    val textInput = source.getLines.toVector
+    val textInput = source.getLines.toSeq
     source.close()
 
     var res: Map[Range, Char] = Map()
@@ -14,7 +14,7 @@ class FileShaderLoader(filePath: String) extends ShaderLoader {
   }
 
   private def LineToRange(line: String) : (Range, Char) = {
-    val lines : Vector[String] = line.trim.replace("..","->").split("->").toVector
+    val lines : Seq[String] = line.trim.replace("..","->").split("->")
     if (lines.size != 3 ||
         !lines(0).forall(_.isDigit) ||
         !lines(1).forall(_.isDigit) ||

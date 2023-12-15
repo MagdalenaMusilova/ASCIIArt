@@ -7,35 +7,35 @@ import UI.Commands.ExactCommandType.{BRIGHTNESSFILTER, DEFAULTCONVERTOR, FILEEXP
 import UI.Commands.{Command, ConvertImageData, ExactCommandType}
 
 class ConsoleController(output : Output) extends UIController {
-  def CommandsByType : Map[CommandType, Vector[Command]] = Map(
-    HELP -> Vector(Command("--help", Vector.empty, "Turns off program", ExactCommandType.HELP)),
-    CONVERTIMAGE -> CICommandsByType.values.flatten.toVector
+  def CommandsByType : Map[CommandType, Seq[Command]] = Map(
+    HELP -> Seq(Command("--help", Seq.empty, "Turns off program", ExactCommandType.HELP)),
+    CONVERTIMAGE -> CICommandsByType.values.flatten.toSeq
   )
-  def CICommandsByType : Map[ConvertImageCommandType, Vector[Command]] = Map(
-    LOADER -> Vector(
-      Command("--image", Vector("[pathToFile]"), "Loads image stored in file", FILELOADER),
-      Command("--image-random", Vector(), "Creates random image", RANDOMLOADER)
+  def CICommandsByType : Map[ConvertImageCommandType, Seq[Command]] = Map(
+    LOADER -> Seq(
+      Command("--image", Seq("[pathToFile]"), "Loads image stored in file", FILELOADER),
+      Command("--image-random", Seq(), "Creates random image", RANDOMLOADER)
     ),
-    EXPORTER -> Vector(
-      Command("--output-file", Vector("[pathToFile]"), "Stores image in file", FILEEXPORTER),
-      Command("--output-console", Vector(), "Prints image to console", OUTPUTEXPORTER)
+    EXPORTER -> Seq(
+      Command("--output-file", Seq("[pathToFile]"), "Stores image in file", FILEEXPORTER),
+      Command("--output-console", Seq(), "Prints image to console", OUTPUTEXPORTER)
     ),
-    CONVERTOR -> Vector(
-      Command("--table", Vector("[tableName]"), "Uses predefined table to convert image to ASCII art", DEFAULTCONVERTOR),
-      Command("--custom-table", Vector("[characters]"), "Uses given sequence to convert image to ASCII art", SEQUENCECONVERTOR),
-      Command("--nonlinear-table", Vector("[pathToFile]"), "Uses non-linear table defined in the given file to convert image to ASCII art", RANGECONVERTOR)
+    CONVERTOR -> Seq(
+      Command("--table", Seq("[tableName]"), "Uses predefined table to convert image to ASCII art", DEFAULTCONVERTOR),
+      Command("--custom-table", Seq("[characters]"), "Uses given sequence to convert image to ASCII art", SEQUENCECONVERTOR),
+      Command("--nonlinear-table", Seq("[pathToFile]"), "Uses non-linear table defined in the given file to convert image to ASCII art", RANGECONVERTOR)
     ),
-    FILTER -> Vector(
-      Command("--rotate", Vector("[degrees]"), "Rotate image by given degrees", ROTATEFILTER),
-      Command("--scale", Vector("[scaleValue]"), "Scales/shrinks image by given amount", SCALEFILTER),
-      Command("--invert", Vector(), "Invert the colors of the image", INVERTFILTER),
-      Command("--flip", Vector("[axis]"), "Flip image on x or y axis", FLIPFILTER),
-      Command("--brightness", Vector("[brightnessValue]"), "Increases/decreases brightness of image by given value", BRIGHTNESSFILTER),
-      Command("--fix-ratio", Vector(), "Fixes the fact that pixel should be 1:1, but a character is 1:2", FIXRATIO)
+    FILTER -> Seq(
+      Command("--rotate", Seq("[degrees]"), "Rotate image by given degrees", ROTATEFILTER),
+      Command("--scale", Seq("[scaleValue]"), "Scales/shrinks image by given amount", SCALEFILTER),
+      Command("--invert", Seq(), "Invert the colors of the image", INVERTFILTER),
+      Command("--flip", Seq("[axis]"), "Flip image on x or y axis", FLIPFILTER),
+      Command("--brightness", Seq("[brightnessValue]"), "Increases/decreases brightness of image by given value", BRIGHTNESSFILTER),
+      Command("--fix-ratio", Seq(), "Fixes the fact that pixel should be 1:1, but a character is 1:2", FIXRATIO)
     )
   )
 
-  private def CommandToOneLine(commands : Vector[Command]) : Vector[String] = {
+  private def CommandToOneLine(commands : Seq[Command]) : Seq[String] = {
     val bestPadding = commands.maxBy(x => x.RecommendedPadding).RecommendedPadding
     commands.map(c => c.ToOneLine(bestPadding))
   }

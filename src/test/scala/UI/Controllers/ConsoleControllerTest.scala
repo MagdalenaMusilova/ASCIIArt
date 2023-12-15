@@ -28,7 +28,7 @@ class ConsoleControllerTest extends FunSuite{
     command.imageExporter = new OutputImageExporter(imageOutput)
     consoleController.ConvertImage(command)
 
-    val expectedRes = Vector(
+    val expectedRes = Seq(
       "OII",
       "XOX",
       "IXO"
