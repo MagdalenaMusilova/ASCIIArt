@@ -3,7 +3,7 @@ package UI.Controllers
 import IO.Output
 import UI.Commands.CommandTypes.{CONVERTIMAGE, CommandType, EXIT, HELP}
 import UI.Commands.ConvertImageCommandTypes.{CONVERTOR, ConvertImageCommandType, EXPORTER, FILTER, LOADER}
-import UI.Commands.ExactCommandType.{BRIGHTNESSFILTER, DEFAULTCONVERTOR, FILEEXPORTER, FILELOADER, FLIPFILTER, INVERTFILTER, OUTPUTEXPORTER, RANDOMLOADER, RANGECONVERTOR, ROTATEFILTER, SCALEFILTER, SEQUENCECONVERTOR}
+import UI.Commands.ExactCommandType.{BRIGHTNESSFILTER, DEFAULTCONVERTOR, FILEEXPORTER, FILELOADER, FIXRATIO, FLIPFILTER, INVERTFILTER, OUTPUTEXPORTER, RANDOMLOADER, RANGECONVERTOR, ROTATEFILTER, SCALEFILTER, SEQUENCECONVERTOR}
 import UI.Commands.{Command, ConvertImageData, ExactCommandType}
 
 class ConsoleController(output : Output) extends UIController {
@@ -31,7 +31,8 @@ class ConsoleController(output : Output) extends UIController {
       Command("--scale", Vector("[scaleValue]"), "Scales/shrinks image by given amount", SCALEFILTER),
       Command("--invert", Vector(), "Invert the colors of the image", INVERTFILTER),
       Command("--flip", Vector("[axis]"), "Flip image on x or y axis", FLIPFILTER),
-      Command("--brightness", Vector("[brightnessValue]"), "Increases/decreases brightness of image by given value", BRIGHTNESSFILTER)
+      Command("--brightness", Vector("[brightnessValue]"), "Increases/decreases brightness of image by given value", BRIGHTNESSFILTER),
+      Command("--fix-ratio", Vector(), "Fixes the fact that pixel should be 1:1, but a character is 1:2", FIXRATIO)
     )
   )
 

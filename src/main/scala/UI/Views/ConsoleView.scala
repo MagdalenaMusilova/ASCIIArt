@@ -3,38 +3,35 @@ package UI.Views
 import ASCIIConvertor.{BlockASCIIConvertor, DefaultASCIIConvertor, PaulBourkeASCIIConvertor, RangeASCIIConvertor, SequenceASCIIConvertor, ShortPaulBourkeASCIIConvertor}
 import IO.{Input, Output}
 import ImageExporters.{EmptyImageExporter, FileImageExporter, ImageExporter, MultiImageExporter, OutputImageExporter}
-import ImageFilters.{BrightnessFilter, FlipFilter, ImageFilter, InvertFilter, MultiFilter, RotateFilter, ScaleFilter}
+import ImageFilters.{BrightnessFilter, FixRatioFilter, FlipFilter, ImageFilter, InvertFilter, MultiFilter, RotateFilter, ScaleFilter}
 import ImageLoaders.{FileImageLoader, RandomImageLoader}
 import ShaderLoaders.FileShaderLoader
 import UI.Commands.CommandTypes.CommandType
 import UI.Commands.ConvertImageCommandTypes.{CONVERTOR, ConvertImageCommandType, EXPORTER, FILTER, LOADER}
-import UI.Commands.ExactCommandType.{BRIGHTNESSFILTER, DEFAULTCONVERTOR, FILEEXPORTER, FILELOADER, FLIPFILTER, INVERTFILTER, OUTPUTEXPORTER, RANDOMLOADER, RANGECONVERTOR, ROTATEFILTER, SCALEFILTER, SEQUENCECONVERTOR}
+import UI.Commands.ExactCommandType.{BRIGHTNESSFILTER, DEFAULTCONVERTOR, FILEEXPORTER, FILELOADER, FIXRATIO, FLIPFILTER, INVERTFILTER, OUTPUTEXPORTER, RANDOMLOADER, RANGECONVERTOR, ROTATEFILTER, SCALEFILTER, SEQUENCECONVERTOR}
 import UI.Commands.{CommandTypes, ConvertImageData}
 import UI.Controllers.ConsoleController
 
 import scala.collection.mutable.ArrayBuffer
 
 class ConsoleView(input : Input, output : Output) {
-  private var running = true
   private val controller = new ConsoleController(output)
 
   def Start(): Unit = {
-    while (running) {
-      val textCommands = GroupTextInput(input.ReadLine())
-      val commandType = GetInputType(textCommands)
-      commandType match {
-        case CommandTypes.HELP => ShowHelp()
-        case CommandTypes.EXIT => Stop()
-        case CommandTypes.CONVERTIMAGE => ConvertImage(textCommands)
-      }
+    val textInput = input.ReadLine()
+    val textCommands = GroupTextInput(textInput)
+    val commandType = GetInputType(textCommands)
+    commandType match {
+      case CommandTypes.HELP => ShowHelp()
+      case CommandTypes.EXIT => Stop()
+      case CommandTypes.CONVERTIMAGE => ConvertImage(textCommands)
     }
     controller.Stop()
   }
 
-  private def GroupTextInput(text: String): Vector[Vector[String]] = {
-    val splitText = text.trim.split("[ =]")
+  private def GroupTextInput(textInput: Vector[String]): Vector[Vector[String]] = {
     val res = new ArrayBuffer[ArrayBuffer[String]]()
-    splitText.foreach(word =>
+    textInput.foreach(word =>
       if (word.startsWith("--")) {
         res += ArrayBuffer(word)
       } else if (res.nonEmpty) {
@@ -61,7 +58,6 @@ class ConsoleView(input : Input, output : Output) {
   }
 
   private def Stop(): Unit = {
-    running = false
     controller.Stop()
   }
 
@@ -191,6 +187,24 @@ class ConsoleView(input : Input, output : Output) {
     })
   }
 
+  private def IsInt(text: String) : Boolean = {
+    try{
+      text.toInt
+    } catch {
+      case _: Throwable => return false
+    }
+    true
+  }
+
+  private def IsDouble(text: String): Boolean = {
+    try {
+      text.toDouble
+    } catch {
+      case _: Throwable => return false
+    }
+    true
+  }
+
   private def LoadFilter(textCommands: Vector[Vector[String]], commandData: ConvertImageData): Unit = {
     textCommands.foreach(textCom => {
       val command = controller.CICommandsByType(FILTER).find(x => x.command == textCom.head).get
@@ -199,15 +213,15 @@ class ConsoleView(input : Input, output : Output) {
       }
       command.exactType match {
         case ROTATEFILTER =>
-          if (!textCom(1).forall(x => x.isDigit)){
+          if (!IsInt(textCom(1))){
             throw new Exception("Input for rotate filter isn't a number")
           }
           commandData.imageFilter = new MultiFilter(new RotateFilter(textCom(1).toInt), commandData.imageFilter)
         case SCALEFILTER =>
-          if (!textCom(1).forall(x => x.isDigit)) {
-            throw new Exception("Input for rotate filter isn't a number")
+          if (!IsDouble(textCom(1))) {
+            throw new Exception("Input for scale filter isn't a number")
           }
-          commandData.imageFilter = new MultiFilter(new ScaleFilter(textCom(1).toInt), commandData.imageFilter)
+          commandData.imageFilter = new MultiFilter(new ScaleFilter(textCom(1).toDouble), commandData.imageFilter)
         case INVERTFILTER =>
           commandData.imageFilter = new MultiFilter(new InvertFilter, commandData.imageFilter)
         case FLIPFILTER =>
@@ -216,10 +230,12 @@ class ConsoleView(input : Input, output : Output) {
           val flipX = (direction == "x")
           commandData.imageFilter = new MultiFilter(new FlipFilter(flipX), commandData.imageFilter)
         case BRIGHTNESSFILTER =>
-          if (!textCom(1).forall(x => x.isDigit)) {
-            throw new Exception("Input for rotate filter isn't a number")
+          if (!IsInt(textCom(1))) {
+            throw new Exception("Input for brightness filter isn't a number")
           }
           commandData.imageFilter = new MultiFilter(new BrightnessFilter(textCom(1).toInt), commandData.imageFilter)
+        case FIXRATIO =>
+          commandData.imageFilter = new MultiFilter(new FixRatioFilter, commandData.imageFilter)
         case _ => throw new Exception("Chosen filter not implemented")
       }
     })

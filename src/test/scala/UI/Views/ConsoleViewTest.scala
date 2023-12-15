@@ -11,14 +11,14 @@ import scala.io.Source
 import scala.language.postfixOps
 
 class ConsoleViewTest extends FunSuite with TimeLimitedTests{
-  override def timeLimit: Span = 2 minute
+  override def timeLimit: Span = 10 seconds
 
   test("Stop"){
     val input = new StringInput
     val output = new StringOutput
     val consoleView = new ConsoleView(input, output)
 
-    input.WriteLine("--exit")
+    input.WriteLine(Vector("--exit"))
     consoleView.Start()
     true
 
@@ -29,9 +29,9 @@ class ConsoleViewTest extends FunSuite with TimeLimitedTests{
     val output = new StringOutput
     val consoleView = new ConsoleView(input, output)
 
-    input.WriteLine("--help")
-    input.WriteLine("--image loaderTest2.png --output-file tmp.txt --custom-table XIO --invert")
-    input.WriteLine("--exit")
+    input.WriteLine(Vector("--help"))
+    input.WriteLine(Vector("--image", "loaderTest2.png", "--output-file", "tmp.txt", "--custom-table", "XIO", "--invert"))
+    input.WriteLine(Vector("--exit"))
 
     consoleView.Start()
 
