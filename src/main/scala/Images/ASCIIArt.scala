@@ -6,7 +6,13 @@ class ASCIIArt(value : Vector[Vector[Int]], shader : Map[Range, Char]) {
       .map(a => shader.find(b => b._1.contains(a)).head._2).toVector
   }
 
-  def height: Int = value.length
+  def height: Int = {
+    if (width == 0) {
+      0
+    } else {
+      value.length
+    }
+  }
 
   def width: Int = {
     if (value.isEmpty) {
@@ -36,5 +42,30 @@ class ASCIIArt(value : Vector[Vector[Int]], shader : Map[Range, Char]) {
     value(y).map(a => shadeScale(a))
   }
 
-  require(value.isEmpty || value.forall(_.length == value.head.length))
+  override def equals(b : Any): Boolean = {
+    b match {
+      case img : ASCIIArt =>
+        shadeScale.equals(img.shadeScale) &&
+          (0 until height).forall(y =>
+            (0 until width).forall(x =>
+              GetAt(x,y) == img.GetAt(x,y)
+            )
+          )
+      case _ => false
+    }
+  }
+
+  if (!value.forall(_.length == value.head.length)) {
+    throw new Exception("Image has varying widths")
+  }
+  if (shader.exists(a => shader.exists(b => !a._1.equals(b._1) && (a._1 intersect b._1).nonEmpty))) {
+    throw new Exception("Overlapping values in shader")
+  }
+  if (!(0 until 256).forall(i =>
+    shader.keys.exists(a => a.contains(i)))) {
+    throw new Exception("Shader doesn't cover from 0 to 255")
+  }
+  if (!shader.forall(x => x._1.min >= 0 && x._1.max < 256)) {
+    throw new Exception("Shader contains invalid values")
+  }
 }

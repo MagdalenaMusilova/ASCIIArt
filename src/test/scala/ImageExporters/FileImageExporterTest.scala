@@ -34,4 +34,27 @@ class FileImageExporterTest extends FunSuite{
 
     assert(res.equals(expectedRes))
   }
+
+  test("FileImageExporterTestCorruptedFile") {
+    val img = new ASCIIArt(Vector(Vector(0,1)), Map((0 until 256) -> 'X'))
+    val exporter = new FileImageExporter("\\/@")
+    intercept[Exception](
+      exporter.Export(img)
+    )
+  }
+
+  test("FileImageExporterTestEmptyImage") {
+    val values: Vector[Vector[Int]] = Vector(Vector())
+    val shader: Map[Range, Char] = Map((0 until 256) -> 'O')
+    val image: ASCIIArt = new ASCIIArt(values, shader)
+    val saver: FileImageExporter = new FileImageExporter("tmp.txt")
+    saver.Export(image)
+
+    val source = Source.fromFile("tmp.txt")
+    val res = source.getLines.toVector
+    source.close()
+    new File("tmp.txt").delete()
+
+    assert(res.length == 0)
+  }
 }

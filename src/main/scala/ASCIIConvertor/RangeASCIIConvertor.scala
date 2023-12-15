@@ -3,7 +3,6 @@ package ASCIIConvertor
 import Images.{ASCIIArt, BitmapImage}
 
 class RangeASCIIConvertor(shader : Map[Range, Char]) extends ASCIIConvertor {
-
   override def GetASCIIArt(image : BitmapImage): ASCIIArt = {
     val values : Vector[Vector[Int]] =
       (0 until image.height).map(y =>

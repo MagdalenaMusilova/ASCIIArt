@@ -46,4 +46,35 @@ class MultiImageExporterTest extends FunSuite {
     //check output exporter B
     assert((0 until 3).forall(y => expectedRes(y) == outputB.ReadLine()))
   }
+
+  test("MultiImageExporterTestEmptyImage"){
+    val values: Vector[Vector[Int]] = Vector(Vector())
+    val shader: Map[Range, Char] = Map((0 until 256) -> 'O')
+    val image: ASCIIArt = new ASCIIArt(values, shader)
+    val output1 = new StringOutput
+    val output2 = new StringOutput
+    val saver = new MultiImageExporter(
+      new OutputImageExporter(output1),
+      new OutputImageExporter(output2)
+    )
+    saver.Export(image)
+
+    assert(output1.ReadLine().isEmpty)
+    assert(output2.ReadLine().isEmpty)
+  }
+
+  test("MultiImageExporterTestInvalidExporter"){
+    val values: Vector[Vector[Int]] = Vector(Vector())
+    val shader: Map[Range, Char] = Map((0 until 256) -> 'O')
+    val image: ASCIIArt = new ASCIIArt(values, shader)
+    val output1 = new StringOutput
+    val saver = new MultiImageExporter(
+      new OutputImageExporter(output1),
+      EmptyImageExporter
+    )
+    intercept[Exception] {
+      saver.Export(image)
+    }
+  }
+
 }

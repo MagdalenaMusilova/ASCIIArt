@@ -18,5 +18,7 @@ class BitmapImage(value : Vector[Vector[RGBColor]]){
     value(y)(x)
   }
 
-  require(value.isEmpty || value.forall(_.length == value.head.length))
+  if (!value.forall(_.length == value.head.length)) {
+    throw new Exception("Image has varying widths")
+  }
 }

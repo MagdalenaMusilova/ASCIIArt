@@ -2,17 +2,19 @@ package Images
 
 import org.scalatest.FunSuite
 
+import scala.collection.immutable.Map
+
 class ASCIIArtTest extends FunSuite{
-  test("CorrectShading") {
+  test("ASCIIArtTest") {
     val values : Vector[Vector[Int]] =
       (0 until 16)
         .map(y => (0 until 16)
           .map(x => y*16+x).toVector).toVector
     val shader : Map[Range, Char] = Map(
-      (0 until 10) -> '0',
-      (10 until 100) -> '1',
-      (100 until 150) -> '2',
       (150 until 151) -> '3',
+      (10 until 100) -> '1',
+      (0 until 10) -> '0',
+      (100 until 150) -> '2',
       (151 until 256) -> '4'
     )
     val asciiArt = new ASCIIArt(values, shader)
@@ -21,5 +23,115 @@ class ASCIIArtTest extends FunSuite{
     assert((100 until 150).forall(x => asciiArt.GetAt(x%16, x/16) == '2'))
     assert((150 until 151).forall(x => asciiArt.GetAt(x%16, x/16) == '3'))
     assert((151 until 256).forall(x => asciiArt.GetAt(x%16, x/16) == '4'))
+  }
+
+  test("ASCIIArtTestZigZagImage"){
+    val values = Vector(
+      Vector(0, 255, 200),
+      Vector(0, 100)
+    )
+    val shader = Map((0 until 256) -> 'X')
+    intercept[Exception] {
+      val img = new ASCIIArt(values, shader)
+    }
+  }
+
+  test("ASCIIArtTestOverlapping"){
+    val values = Vector(
+      Vector(0, 255, 200),
+      Vector(0, 100)
+    )
+    val shader = Map(
+      (0 until 100) -> 'O',
+      (100 until 201) -> 'I',
+      (200 until 256) -> 'X'
+    )
+    intercept[Exception] {
+      val img = new ASCIIArt(values, shader)
+    }
+  }
+
+  test("ASCIIArtTestMissingValues") {
+    val values = Vector(
+      Vector(0, 255, 200),
+      Vector(0, 100)
+    )
+    val shader = Map(
+      (0 until 100) -> 'O',
+      (100 until 150) -> 'I',
+      (200 until 256) -> 'X'
+    )
+    intercept[Exception] {
+      val img = new ASCIIArt(values, shader)
+    }
+  }
+
+  test("ASCIIArtTestInvalidValues"){
+    val values = Vector(
+      Vector(0, 255, 200),
+      Vector(0, 100)
+    )
+    val shaderNeg = Map(
+      (-10 until 100) -> 'O',
+      (100 until 200) -> 'I',
+      (200 until 256) -> 'X'
+    )
+    val shaderTooBig = Map(
+      (0 until 100) -> 'O',
+      (100 until 200) -> 'I',
+      (200 until 300) -> 'X'
+    )
+    val shaderBoth = Map(
+      (-1 until 100) -> 'O',
+      (100 until 200) -> 'I',
+      (200 until 300) -> 'X'
+    )
+    intercept[Exception] {
+      val img = new ASCIIArt(values, shaderNeg)
+    }
+    intercept[Exception] {
+      val img = new ASCIIArt(values, shaderTooBig)
+    }
+    intercept[Exception] {
+      val img = new ASCIIArt(values, shaderBoth)
+    }
+  }
+
+  test("ASCIIArtTestInvalidIndex"){
+    val values = Vector(
+      Vector(0, 100, 200),
+      Vector(123, 150, 250),
+      Vector(255, 10, 20)
+    )
+    val shader = Map(
+      (0 until 100) -> 'X',
+      (100 until 200) -> 'I',
+      (200 until 256) -> 'O'
+    )
+    val img = new ASCIIArt(values, shader)
+    intercept[Exception]{
+      img.GetAt(0,3)
+    }
+    intercept[Exception] {
+      img.GetAt(3, 2)
+    }
+    intercept[Exception] {
+      img.GetAt(-1, 2)
+    }
+    intercept[Exception] {
+      img.GetAt(1, -2)
+    }
+    intercept[Exception] {
+      img.GetAt(3, -2)
+    }
+    intercept[Exception] {
+      img.GetAt(2, 4)
+    }
+    intercept[Exception] {
+      img.GetAt(10, 2)
+    }
+    intercept[Exception] {
+      img.GetAt(100, 20)
+    }
   }
 }

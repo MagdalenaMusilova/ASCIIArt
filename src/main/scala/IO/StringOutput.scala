@@ -20,10 +20,6 @@ class StringOutput extends Output {
     isEnqueueLastValue = true
   }
 
-  override def PrintLines(texts: Vector[String], prefix: String): Unit = {
-    texts.foreach(line => PrintLn(prefix + line))
-  }
-
   def ReadLine() : String = {
     if (value.isEmpty){
       if (isEnqueueLastValue){

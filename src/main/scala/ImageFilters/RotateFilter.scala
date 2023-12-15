@@ -13,8 +13,15 @@ class RotateFilter(degree: Int) extends ImageFilter{
   }
 
   override def EditImage(image: ASCIIArt): ASCIIArt = {
-    val num = (degree%360)/90
+    val num = {
+      if (degree > 0) (degree%360)/90
+      else (360 + degree%360)/90
+    }
     (0 until num)
       .foldLeft(image)((img, _) => Rotate90(img))
+  }
+
+  if (degree % 90 != 0) {
+    throw new Exception("Image can be rotated only by degree divisible by 90")
   }
 }

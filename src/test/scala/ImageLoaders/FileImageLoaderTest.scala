@@ -20,4 +20,11 @@ class FileImageLoaderTest extends FunSuite{
     assert(image.GetAt(1,2) == new RGBColor(0, 255, 255))
     assert(image.GetAt(2,2) == new RGBColor(255, 0, 255))
   }
+
+  test("FileImageLoaderTestFail") {
+    val reader = new FileImageLoader("invalid.png")
+    intercept[Exception] {
+      val image = reader.Get()
+    }
+  }
 }

@@ -9,10 +9,6 @@ class ConsoleOutput extends Output {
     println(text)
   }
 
-  override def PrintLines(texts: Vector[String], prefix : String): Unit = {
-    texts.foreach(line => println(prefix + line))
-  }
-
   override def Flush(): Unit = {
     Console.flush()
   }

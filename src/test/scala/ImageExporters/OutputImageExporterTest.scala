@@ -32,4 +32,15 @@ class OutputImageExporterTest extends FunSuite{
 
     assert((0 until 3).forall(y => expectedRes(y) == output.ReadLine()))
   }
+
+  test("OutputImageExporterTestEmptyImage") {
+    val values: Vector[Vector[Int]] = Vector(Vector())
+    val shader: Map[Range, Char] = Map((0 until 256) -> 'O')
+    val image: ASCIIArt = new ASCIIArt(values, shader)
+    val output = new StringOutput
+    val saver = new OutputImageExporter(output)
+    saver.Export(image)
+
+    assert(output.ReadLine().isEmpty)
+  }
 }

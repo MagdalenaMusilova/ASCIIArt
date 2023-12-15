@@ -1,6 +1,6 @@
 package ASCIIConvertor
 
-import Images.{BitmapImage, RGBColor}
+import Images.{ASCIIArt, BitmapImage, RGBColor}
 import org.scalatest.FunSuite
 
 class RangeASCIIConvertorTest extends FunSuite{
@@ -38,4 +38,43 @@ class RangeASCIIConvertorTest extends FunSuite{
     )
   }
 
+  test("RangeASCIIConvertorTestInvalidShader") {
+    val image = new BitmapImage(Vector(Vector(RGBColor(0, 0, 0))))
+    val notCoveringShader = Map(
+      (0 until 100) -> 'O',
+      (100 until 230) -> 'X'
+    )
+    val overlappingShader = Map(
+      (0 to 120) -> 'O',
+      (120 until 256) -> 'X'
+    )
+    val negativeValuesShader = Map(
+      (-10 until 256) -> 'X'
+    )
+    val tooBigValuesShader = Map(
+      (0 until 257) -> 'X'
+    )
+    intercept[Exception] {
+      new RangeASCIIConvertor(notCoveringShader).GetASCIIArt(image)
+    }
+    intercept[Exception] {
+      new RangeASCIIConvertor(overlappingShader).GetASCIIArt(image)
+    }
+    intercept[Exception] {
+      new RangeASCIIConvertor(negativeValuesShader).GetASCIIArt(image)
+    }
+    intercept[Exception] {
+      new RangeASCIIConvertor(tooBigValuesShader).GetASCIIArt(image)
+    }
+  }
+
+  test("RangeASCIIConvertorTestEmptyImage") {
+    val image = new BitmapImage(Vector())
+    val shader = Map(
+      (0 until 256) -> 'X'
+    )
+    val convertor = new RangeASCIIConvertor(shader)
+    val res = convertor.GetASCIIArt(image)
+    assert(res.height == 0 && res.width == 0)
+  }
 }

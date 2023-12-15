@@ -14,7 +14,7 @@ class FileShaderLoader(filePath: String) extends ShaderLoader {
   }
 
   private def LineToRange(line: String) : (Range, Char) = {
-    val lines : Vector[String] = line.trim.replace(".."," ").split(" ").toVector
+    val lines : Vector[String] = line.trim.replace("..","->").split("->").toVector
     if (lines.size != 3 ||
         !lines(0).forall(_.isDigit) ||
         !lines(1).forall(_.isDigit) ||

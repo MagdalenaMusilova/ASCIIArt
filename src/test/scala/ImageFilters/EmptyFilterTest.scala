@@ -3,7 +3,7 @@ package ImageFilters
 import Images.ASCIIArt
 import org.scalatest.FunSuite
 
-class EmptyFilterTest extends FunSuite{
+class EmptyFilterTest extends FunSuite {
   test("EmptyFilterTest") {
     val values: Vector[Vector[Int]] = Vector(
       Vector(255, 255, 255),

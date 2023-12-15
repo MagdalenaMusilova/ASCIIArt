@@ -26,4 +26,39 @@ class BitmapImageTest extends FunSuite{
       new BitmapImage(values)
     }
   }
+
+  test("BitmapImageTestInvalidIndex") {
+    val black = RGBColor(0,0,0)
+    val white = RGBColor(255,255,255)
+    val values = Vector(
+      Vector(black, white, white),
+      Vector(black, white, black),
+      Vector(black, black, white)
+    )
+    val img = new BitmapImage(values)
+    intercept[Exception] {
+      img.GetAt(0, 3)
+    }
+    intercept[Exception] {
+      img.GetAt(3, 2)
+    }
+    intercept[Exception] {
+      img.GetAt(-1, 2)
+    }
+    intercept[Exception] {
+      img.GetAt(1, -2)
+    }
+    intercept[Exception] {
+      img.GetAt(3, -2)
+    }
+    intercept[Exception] {
+      img.GetAt(2, 4)
+    }
+    intercept[Exception] {
+      img.GetAt(10, 2)
+    }
+    intercept[Exception] {
+      img.GetAt(100, 20)
+    }
+  }
 }

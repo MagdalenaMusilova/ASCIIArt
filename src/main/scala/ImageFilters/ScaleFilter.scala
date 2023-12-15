@@ -32,4 +32,11 @@ class ScaleFilter(scale : Double) extends ImageFilter {
         .foldLeft(image)((img, n) => IncreaseSize(img))
     }
   }
+
+  if (scale < 0){
+    throw new Exception("Image can't be scaled by a negative value")
+  }
+  if ((log10(scale)/log10(2)) % 1 != 0){
+    throw new Exception("Image can be scaled only by a value that is a power of 2")
+  }
 }
