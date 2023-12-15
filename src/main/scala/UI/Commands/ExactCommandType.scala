@@ -2,8 +2,7 @@ package UI.Commands
 
 object ExactCommandType extends Enumeration {
   type ExactCommandType = Value
-  val EXIT,
-  HELP,
+  val HELP,
   FILELOADER, RANDOMLOADER,
   FILEEXPORTER, OUTPUTEXPORTER,
   DEFAULTCONVERTOR, SEQUENCECONVERTOR, RANGECONVERTOR,

@@ -18,15 +18,13 @@ class ConsoleView(input : Input, output : Output) {
   private val controller = new ConsoleController(output)
 
   def Start(): Unit = {
-    val textInput = input.ReadLine()
+    val textInput = input.ReadInputArgs()
     val textCommands = GroupTextInput(textInput)
     val commandType = GetInputType(textCommands)
     commandType match {
       case CommandTypes.HELP => ShowHelp()
-      case CommandTypes.EXIT => Stop()
       case CommandTypes.CONVERTIMAGE => ConvertImage(textCommands)
     }
-    controller.Stop()
   }
 
   private def GroupTextInput(textInput: Vector[String]): Vector[Vector[String]] = {
@@ -55,10 +53,6 @@ class ConsoleView(input : Input, output : Output) {
     } else {
       CommandTypes.OTHER
     }
-  }
-
-  private def Stop(): Unit = {
-    controller.Stop()
   }
 
   private def ShowHelp(): Unit = {

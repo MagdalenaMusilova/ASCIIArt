@@ -1,7 +1,7 @@
 package UI.Controllers
 
 import IO.Output
-import UI.Commands.CommandTypes.{CONVERTIMAGE, CommandType, EXIT, HELP}
+import UI.Commands.CommandTypes.{CONVERTIMAGE, CommandType, HELP}
 import UI.Commands.ConvertImageCommandTypes.{CONVERTOR, ConvertImageCommandType, EXPORTER, FILTER, LOADER}
 import UI.Commands.ExactCommandType.{BRIGHTNESSFILTER, DEFAULTCONVERTOR, FILEEXPORTER, FILELOADER, FIXRATIO, FLIPFILTER, INVERTFILTER, OUTPUTEXPORTER, RANDOMLOADER, RANGECONVERTOR, ROTATEFILTER, SCALEFILTER, SEQUENCECONVERTOR}
 import UI.Commands.{Command, ConvertImageData, ExactCommandType}
@@ -9,7 +9,6 @@ import UI.Commands.{Command, ConvertImageData, ExactCommandType}
 class ConsoleController(output : Output) extends UIController {
   def CommandsByType : Map[CommandType, Vector[Command]] = Map(
     HELP -> Vector(Command("--help", Vector.empty, "Turns off program", ExactCommandType.HELP)),
-    EXIT -> Vector(Command("--exit", Vector.empty, "Lists all available commands", ExactCommandType.EXIT)),
     CONVERTIMAGE -> CICommandsByType.values.flatten.toVector
   )
   def CICommandsByType : Map[ConvertImageCommandType, Vector[Command]] = Map(
@@ -53,11 +52,7 @@ class ConsoleController(output : Output) extends UIController {
     output.PrintLn("   Image filters (unlimited, can be empty):")
     output.PrintLines(CommandToOneLine(CICommandsByType(FILTER)), "   ")
     output.PrintLn("Other commands:")
-    output.PrintLines(CommandToOneLine(CommandsByType(HELP).concat(CommandsByType(EXIT))), "   ")
-  }
-
-  override def Stop(): Unit = {
-    output.PrintLn("Exiting program...")
+    output.PrintLines(CommandToOneLine(CommandsByType(HELP)), "   ")
   }
 
   override def ConvertImage(command: ConvertImageData): Unit = {

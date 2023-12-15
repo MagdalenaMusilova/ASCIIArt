@@ -1,5 +1,5 @@
 package IO
 
 trait Input {
-  def ReadLine() : Vector[String]
+  def ReadInputArgs() : Vector[String]
 }

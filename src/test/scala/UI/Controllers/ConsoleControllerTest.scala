@@ -14,7 +14,6 @@ class ConsoleControllerTest extends FunSuite{
     val consoleController = new ConsoleController(out)
     consoleController.ShowHelp()
     assert(out.ReadLine().nonEmpty)
-    consoleController.Stop()
     out.Flush()
     true
   }
