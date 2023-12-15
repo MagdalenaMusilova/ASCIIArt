@@ -1,7 +1,7 @@
 package ImageFilters
 import Images.ASCIIArt
 
-class BrightnessFilter(val brightness: Int) extends ImageFilter {
+class BrightnessFilter(brightness: Int) extends ImageFilter {
   override def EditImage(image: ASCIIArt): ASCIIArt = {
     val values: Vector[Vector[Int]] =
       (0 until image.height).map(y =>

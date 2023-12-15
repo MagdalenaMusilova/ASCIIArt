@@ -1,10 +1,9 @@
 package IO
 
-import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
 class StringInput extends Input {
-  val values: ArrayBuffer[String] = ArrayBuffer()
+  private val values: ArrayBuffer[String] = ArrayBuffer()
 
   def WriteLine(text : Vector[String]): Unit = {
     values.addAll(text)

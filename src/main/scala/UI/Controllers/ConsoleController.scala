@@ -53,6 +53,12 @@ class ConsoleController(output : Output) extends UIController {
     output.PrintLines(CommandToOneLine(CICommandsByType(FILTER)), "   ")
     output.PrintLn("Other commands:")
     output.PrintLines(CommandToOneLine(CommandsByType(HELP)), "   ")
+    output.PrintLn("")
+    output.PrintLn("If you upload ASCII art range shader from a file, each value needs to be on a separate line and values needs to be in the following format:")
+    output.PrintLn("min..max->char")
+    output.PrintLn("So for example:")
+    output.PrintLn("0..100->X")
+    output.PrintLn("100.256->Y")
   }
 
   override def ConvertImage(command: ConvertImageData): Unit = {
