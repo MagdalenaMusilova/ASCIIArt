@@ -17,7 +17,7 @@ class BitmapImageTest extends FunSuite{
     ))
   }
 
-  test("BitmapImageTestFail") {
+  test("BitmapImageTestUnevenRows") {
     val values = Seq(
       Seq(RGBColor(0, 0, 0), RGBColor(5, 100, 244)),
       Seq(RGBColor(255, 255, 255))

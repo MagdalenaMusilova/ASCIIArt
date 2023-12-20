@@ -4,16 +4,12 @@ import Images.ASCIIArt
 import org.scalatest.FunSuite
 
 class ScaleFilterTest extends ImageFilterTest(new ScaleFilter(4)) {
-  test("ScaleFilterTest") {
+  test("ScaleFilterTestScale") {
     val bigValues: Seq[Seq[Int]] = Seq(
       Seq(255, 255, 255, 255),
       Seq(255, 255, 0,   200),
       Seq(128, 0, 255, 10),
       Seq(0, 128, 255, 10)
-    )
-    val smallValues: Seq[Seq[Int]] = Seq(
-      Seq(0,   128),
-      Seq(130, 255)
     )
     val shader: Map[Range, Char] = Map(
       (0 until 128) -> 'X',
@@ -21,16 +17,31 @@ class ScaleFilterTest extends ImageFilterTest(new ScaleFilter(4)) {
       (255 until 256) -> 'O'
     )
     val bigImage = new ASCIIArt(bigValues, shader)
-    val smallImage = new ASCIIArt(smallValues, shader)
-    val scaleFilter = new ScaleFilter(4)
     val shrinkFilter = new ScaleFilter(0.5)
     val shrunkenImage = shrinkFilter.EditImage(bigImage)
-    val scaledImage = scaleFilter.EditImage(smallImage)
 
     val shrunkenRes = Seq(
       "OI",
       "XI"
     )
+    assert(shrunkenImage.height == shrunkenRes.length)
+    assert((0 until shrunkenImage.height).forall(y => shrunkenRes(y).equals(shrunkenImage.GetLineAt(y))))
+  }
+
+  test("ScaleFilterTest") {
+    val smallValues: Seq[Seq[Int]] = Seq(
+      Seq(0, 128),
+      Seq(130, 255)
+    )
+    val shader: Map[Range, Char] = Map(
+      (0 until 128) -> 'X',
+      (128 until 255) -> 'I',
+      (255 until 256) -> 'O'
+    )
+    val smallImage = new ASCIIArt(smallValues, shader)
+    val scaleFilter = new ScaleFilter(4)
+    val scaledImage = scaleFilter.EditImage(smallImage)
+
     val scaledRes = Seq(
       "XXXXIIII",
       "XXXXIIII",
@@ -41,13 +52,11 @@ class ScaleFilterTest extends ImageFilterTest(new ScaleFilter(4)) {
       "IIIIOOOO",
       "IIIIOOOO",
     )
-    assert(shrunkenImage.height == shrunkenRes.length)
-    assert((0 until shrunkenImage.height).forall(y => shrunkenRes(y).equals(shrunkenImage.GetLineAt(y))))
     assert(scaledImage.height == scaledRes.length)
     assert((0 until scaledImage.height).forall(y => scaledRes(y).equals(scaledImage.GetLineAt(y))))
   }
 
-  test("ScaleFilterTestFail"){
+  test("ScaleFilterTestWrongInput"){
     val values: Seq[Seq[Int]] = Seq(
       Seq(0, 128),
       Seq(130, 255)

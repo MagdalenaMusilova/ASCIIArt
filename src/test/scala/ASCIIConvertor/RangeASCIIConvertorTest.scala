@@ -38,31 +38,43 @@ class RangeASCIIConvertorTest extends FunSuite{
     )
   }
 
-  test("RangeASCIIConvertorTestInvalidShader") {
+  test("RangeASCIIConvertorTestNotCoveringShader"){
     val image = new BitmapImage(Seq(Seq(RGBColor(0, 0, 0))))
     val notCoveringShader = Map(
       (0 until 100) -> 'O',
       (100 until 230) -> 'X'
     )
+    intercept[Exception] {
+      new RangeASCIIConvertor(notCoveringShader).GetASCIIArt(image)
+    }
+  }
+
+  test("RangeASCIIConvertorTestOverlappingShader"){
+    val image = new BitmapImage(Seq(Seq(RGBColor(0, 0, 0))))
     val overlappingShader = Map(
       (0 to 120) -> 'O',
       (120 until 256) -> 'X'
     )
-    val negativeValuesShader = Map(
-      (-10 until 256) -> 'X'
-    )
-    val tooBigValuesShader = Map(
-      (0 until 257) -> 'X'
-    )
-    intercept[Exception] {
-      new RangeASCIIConvertor(notCoveringShader).GetASCIIArt(image)
-    }
     intercept[Exception] {
       new RangeASCIIConvertor(overlappingShader).GetASCIIArt(image)
     }
+  }
+
+  test("RangeASCIIConvertorTestNegativeValueShader"){
+    val image = new BitmapImage(Seq(Seq(RGBColor(0, 0, 0))))
+    val negativeValuesShader = Map(
+      (-10 until 256) -> 'X'
+    )
     intercept[Exception] {
       new RangeASCIIConvertor(negativeValuesShader).GetASCIIArt(image)
     }
+  }
+
+  test("RangeASCIIConvertorTestTooBigValueShader"){
+    val image = new BitmapImage(Seq(Seq(RGBColor(0, 0, 0))))
+    val tooBigValuesShader = Map(
+      (0 until 257) -> 'X'
+    )
     intercept[Exception] {
       new RangeASCIIConvertor(tooBigValuesShader).GetASCIIArt(image)
     }

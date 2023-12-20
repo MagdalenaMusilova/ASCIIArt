@@ -29,13 +29,18 @@ class SequenceASCIIConvertorTest extends FunSuite{
     assert(res.width == 0 && res.height == 0)
   }
 
-  test("SequenceASCIIConvertorTestInvalidShader") {
+  test("SequenceASCIIConvertorTestEmptyShader") {
     val values = Seq(Seq(RGBColor(0,10,100)))
     val image = new BitmapImage(values)
     intercept[Exception] {
       val emptyConvertor = new SequenceASCIIConvertor("")
       emptyConvertor.GetASCIIArt(image)
     }
+  }
+
+  test("SequenceASCIIConvertorTestShaderOver256Chars"){
+    val values = Seq(Seq(RGBColor(0, 10, 100)))
+    val image = new BitmapImage(values)
     intercept[Exception] {
       val longShader = (0 to 256).map(_ => 'a').mkString("")
       val emptyConvertor = new SequenceASCIIConvertor(longShader)

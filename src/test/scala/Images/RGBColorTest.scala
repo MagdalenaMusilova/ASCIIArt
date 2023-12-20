@@ -14,11 +14,20 @@ class RGBColorTest extends FunSuite{
       RGBColor(0, -1, 0)
     }
     intercept[Exception] {
+      RGBColor(0, 0, -10)
+    }
+  }
+
+  test("RGBColorTestTooBigValue") {
+    intercept[Exception] {
       RGBColor(0, 2300, 0)
     }
     intercept[Exception] {
       RGBColor(256, 256, 256)
     }
+  }
+
+  test("RGBColorTestTooBigAndNegativeValue") {
     intercept[Exception] {
       RGBColor(0, -1, 256)
     }

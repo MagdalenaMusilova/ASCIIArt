@@ -4,7 +4,7 @@ import Images.ASCIIArt
 import org.scalatest.FunSuite
 
 class BrightnessFilterTest extends ImageFilterTest(new BrightnessFilter(5)) {
-  test("BrightnessFilterTest") {
+  test("BrightnessFilterTestBright") {
     val values: Seq[Seq[Int]] = Seq(
       Seq(0, 120, 128, 130, 250, 255),
     )
@@ -15,13 +15,26 @@ class BrightnessFilterTest extends ImageFilterTest(new BrightnessFilter(5)) {
     )
     val orgImage = new ASCIIArt(values, shader)
     val brightFilter = new BrightnessFilter(10)
-    val darkFilter = new BrightnessFilter(-10)
     val brightImage = brightFilter.EditImage(orgImage)
-    val darkImage = darkFilter.EditImage(orgImage)
 
     val expectedBrightRes = "XIIIOO"
-    val expectedDarkRes = "XXXXII"
     assert(expectedBrightRes.equals(brightImage.GetLineAt(0)))
+  }
+
+  test("BrightnessFilterTestDark") {
+    val values: Seq[Seq[Int]] = Seq(
+      Seq(0, 120, 128, 130, 250, 255),
+    )
+    val shader: Map[Range, Char] = Map(
+      (0 until 128) -> 'X',
+      (128 until 255) -> 'I',
+      (255 until 256) -> 'O'
+    )
+    val orgImage = new ASCIIArt(values, shader)
+    val darkFilter = new BrightnessFilter(-10)
+    val darkImage = darkFilter.EditImage(orgImage)
+
+    val expectedDarkRes = "XXXXII"
     assert(expectedDarkRes.equals(darkImage.GetLineAt(0)))
   }
 

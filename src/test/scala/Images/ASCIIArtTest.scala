@@ -28,7 +28,7 @@ class ASCIIArtTest extends FunSuite{
   test("ASCIIArtTestZigZagImage"){
     val values = Seq(
       Seq(0, 255, 200),
-      Seq(0, 100)
+      Seq(0, 100, 100)
     )
     val shader = Map((0 until 256) -> 'X')
     intercept[Exception] {
@@ -39,7 +39,7 @@ class ASCIIArtTest extends FunSuite{
   test("ASCIIArtTestOverlapping"){
     val values = Seq(
       Seq(0, 255, 200),
-      Seq(0, 100)
+      Seq(0, 100, 100)
     )
     val shader = Map(
       (0 until 100) -> 'O',
@@ -54,7 +54,7 @@ class ASCIIArtTest extends FunSuite{
   test("ASCIIArtTestMissingValues") {
     val values = Seq(
       Seq(0, 255, 200),
-      Seq(0, 100)
+      Seq(0, 100, 100)
     )
     val shader = Map(
       (0 until 100) -> 'O',
@@ -66,20 +66,40 @@ class ASCIIArtTest extends FunSuite{
     }
   }
 
-  test("ASCIIArtTestInvalidValues"){
+  test("ASCIIArtTestNegativeShader"){
     val values = Seq(
       Seq(0, 255, 200),
-      Seq(0, 100)
+      Seq(0, 100, 100)
     )
     val shaderNeg = Map(
       (-10 until 100) -> 'O',
       (100 until 200) -> 'I',
       (200 until 256) -> 'X'
     )
+    intercept[Exception] {
+      val img = new ASCIIArt(values, shaderNeg)
+    }
+  }
+
+  test("ASCIIArtTestShaderTooBig") {
+    val values = Seq(
+      Seq(0, 255, 200),
+      Seq(0, 100, 100)
+    )
     val shaderTooBig = Map(
       (0 until 100) -> 'O',
       (100 until 200) -> 'I',
       (200 until 300) -> 'X'
+    )
+    intercept[Exception] {
+      val img = new ASCIIArt(values, shaderTooBig)
+    }
+  }
+
+  test("ASCIIArtTestShaderNegativeAndTooBig") {
+    val values = Seq(
+      Seq(0, 255, 200),
+      Seq(0, 100, 100)
     )
     val shaderBoth = Map(
       (-1 until 100) -> 'O',
@@ -87,11 +107,95 @@ class ASCIIArtTest extends FunSuite{
       (200 until 300) -> 'X'
     )
     intercept[Exception] {
-      val img = new ASCIIArt(values, shaderNeg)
+      val img = new ASCIIArt(values, shaderBoth)
     }
+  }
+
+  test("ASCIIArtTestShaderNegativePixel") {
+    val values = Seq(
+      Seq(0, 255, 200),
+      Seq(0, 100, 100)
+    )
+    val shaderBoth = Map(
+      (-1 until 100) -> 'O',
+      (100 until 200) -> 'I',
+      (200 until 300) -> 'X'
+    )
     intercept[Exception] {
-      val img = new ASCIIArt(values, shaderTooBig)
+      val img = new ASCIIArt(values, shaderBoth)
     }
+  }
+
+  test("ASCIIArtTestNotRectangleImage") {
+    val values = Seq(
+      Seq(0, 255, 200),
+      Seq(0, 100)
+    )
+    val shaderBoth = Map(
+      (0 until 100) -> 'O',
+      (100 until 200) -> 'I',
+      (200 until 256) -> 'X'
+    )
+    intercept[Exception] {
+      val img = new ASCIIArt(values, shaderBoth)
+    }
+  }
+
+  test("ASCIIArtTestNotCoveringShader") {
+    val values = Seq(
+      Seq(0, 255, 200),
+      Seq(0, 100, 100)
+    )
+    val shaderBoth = Map(
+      (0 until 100) -> 'O',
+      (100 until 150) -> 'I',
+      (200 until 256) -> 'X'
+    )
+    intercept[Exception] {
+      val img = new ASCIIArt(values, shaderBoth)
+    }
+  }
+
+  test("ASCIIArtTestOverlappingShader") {
+    val values = Seq(
+      Seq(0, 255, 200),
+      Seq(0, 100, 100)
+    )
+    val shaderBoth = Map(
+      (0 until 100) -> 'O',
+      (100 until 201) -> 'I',
+      (200 until 256) -> 'X'
+    )
+    intercept[Exception] {
+      val img = new ASCIIArt(values, shaderBoth)
+    }
+  }
+
+  test("ASCIIArtTestOver256PixelValue") {
+    val values = Seq(
+      Seq(0, 255, 200),
+      Seq(0, 100, 300)
+    )
+    val shaderBoth = Map(
+      (0 until 100) -> 'O',
+      (100 until 200) -> 'I',
+      (200 until 256) -> 'X'
+    )
+    intercept[Exception] {
+      val img = new ASCIIArt(values, shaderBoth)
+    }
+  }
+
+  test("ASCIIArtTestNegativePixelValue") {
+    val values = Seq(
+      Seq(0, 255, 200),
+      Seq(0, 100, -1)
+    )
+    val shaderBoth = Map(
+      (0 until 100) -> 'O',
+      (100 until 200) -> 'I',
+      (200 until 256) -> 'X'
+    )
     intercept[Exception] {
       val img = new ASCIIArt(values, shaderBoth)
     }

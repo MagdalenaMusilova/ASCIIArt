@@ -1,6 +1,6 @@
 package Images
 
-class ASCIIArt(value : Seq[Seq[Int]], shader : Map[Range, Char]) {
+class ASCIIArt(values : Seq[Seq[Int]], shader : Map[Range, Char]) {
   private val shadeScale : Seq[Char] = {
     (0 until 256)
       .map(a => shader.find(b => b._1.contains(a)).head._2)
@@ -10,15 +10,15 @@ class ASCIIArt(value : Seq[Seq[Int]], shader : Map[Range, Char]) {
     if (width == 0) {
       0
     } else {
-      value.length
+      values.length
     }
   }
 
   def width: Int = {
-    if (value.isEmpty) {
+    if (values.isEmpty) {
       0
     } else {
-      value.head.length
+      values.head.length
     }
   }
 
@@ -31,7 +31,7 @@ class ASCIIArt(value : Seq[Seq[Int]], shader : Map[Range, Char]) {
       !(0 until height).contains(y)) {
       throw new ArrayIndexOutOfBoundsException()
     }
-    value(y)(x)
+    values(y)(x)
   }
 
   def GetAt(x : Int, y : Int) : Char = {
@@ -55,7 +55,7 @@ class ASCIIArt(value : Seq[Seq[Int]], shader : Map[Range, Char]) {
     }
   }
 
-  if (!value.forall(_.length == value.head.length)) {
+  if (!values.forall(_.length == values.head.length)) {
     throw new Exception("Image has varying widths")
   }
   if (shader.exists(a => shader.exists(b => !a._1.equals(b._1) && (a._1 intersect b._1).nonEmpty))) {
@@ -67,5 +67,8 @@ class ASCIIArt(value : Seq[Seq[Int]], shader : Map[Range, Char]) {
   }
   if (!shader.forall(x => x._1.min >= 0 && x._1.max < 256)) {
     throw new Exception("Shader contains invalid values")
+  }
+  if (!values.forall(row => row.forall(x => (0 until 256).contains(x)))){
+    throw new Exception("Invalid value of pixels")
   }
 }
