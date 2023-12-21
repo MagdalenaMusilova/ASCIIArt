@@ -2,6 +2,9 @@ package IO
 
 import scala.collection.mutable.ArrayBuffer
 
+/**
+ * Returns what was stored inside of it
+ */
 class StringInput extends Input {
   private val values: ArrayBuffer[String] = ArrayBuffer()
 

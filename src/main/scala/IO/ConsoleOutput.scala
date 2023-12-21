@@ -1,5 +1,8 @@
 package IO
 
+/**
+ * Prints to console
+ */
 class ConsoleOutput extends Output {
   override def Print(text: String): Unit = {
     print(text)

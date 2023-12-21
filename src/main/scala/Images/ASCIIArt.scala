@@ -1,5 +1,10 @@
 package Images
 
+/**
+ * Image created of ASCII characters
+ * @param values Greyscale values of the image
+ * @param shader Which shader should be used for the image
+ */
 class ASCIIArt(values : Seq[Seq[Int]], shader : Map[Range, Char]) {
   private val shadeScale : Seq[Char] = {
     (0 until 256)

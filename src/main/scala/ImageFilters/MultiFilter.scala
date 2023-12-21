@@ -1,6 +1,9 @@
 package ImageFilters
 import Images.ASCIIArt
 
+/**
+ * Combines two filters
+ */
 class MultiFilter(filter1: ImageFilter, filter2: ImageFilter) extends ImageFilter {
   override def EditImage(image: ASCIIArt): ASCIIArt = {
     val tmp = filter1.EditImage(image)

@@ -1,5 +1,9 @@
 package Images
 
+/**
+ * Image made of RGB color pixels
+ * @param value The image represented as 2D array
+ */
 class BitmapImage(value : Seq[Seq[RGBColor]]){
   def height : Int = value.length
   def width : Int = {

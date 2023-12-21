@@ -3,6 +3,9 @@ import Images.{BitmapImage, RGBColor}
 
 import scala.util.Random
 
+/**
+ * Creates random noise of pixels and returns it as an image
+ */
 class RandomImageLoader extends ImageLoader {
   def MinWidth = 5
   def MaxWidth = 100

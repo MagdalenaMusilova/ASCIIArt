@@ -4,7 +4,10 @@ import Images.ASCIIArt
 
 import java.io.{File, PrintWriter}
 
-
+/**
+ * Exports image to a file
+ * @param fileName Name of the file in which ASCII art will be stored.
+ */
 class FileImageExporter(fileName : String) extends ImageExporter {
   override def Export(image: ASCIIArt) : Unit = {
     val file = new File(fileName)

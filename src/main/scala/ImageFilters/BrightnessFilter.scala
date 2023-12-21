@@ -1,6 +1,10 @@
 package ImageFilters
 import Images.ASCIIArt
 
+/**
+ * Brightens or darkens an image
+ * @param brightness How much brighter the image should be (can be negative)
+ */
 class BrightnessFilter(brightness: Int) extends ImageFilter {
   override def EditImage(image: ASCIIArt): ASCIIArt = {
     val values: Seq[Seq[Int]] =

@@ -36,7 +36,7 @@ class ConsoleController(output : Output) extends UIController {
   )
 
   private def CommandToOneLine(commands : Seq[Command]) : Seq[String] = {
-    val bestPadding = commands.maxBy(x => x.RecommendedPadding).RecommendedPadding
+    val bestPadding = commands.maxBy(x => x.SizeOfCommand + 4).SizeOfCommand
     commands.map(c => c.ToOneLine(bestPadding))
   }
 

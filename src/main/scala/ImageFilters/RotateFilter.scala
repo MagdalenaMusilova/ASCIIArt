@@ -1,6 +1,10 @@
 package ImageFilters
 import Images.ASCIIArt
 
+/**
+ * Rotates the image by given amount of degrees
+ * @param degree Degrees by which the image will be rotated (must be multiple of 90, can be negative, can be over 360)
+ */
 class RotateFilter(degree: Int) extends ImageFilter{
   private def Rotate90(image: ASCIIArt): ASCIIArt = {
     val values =

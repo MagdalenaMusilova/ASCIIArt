@@ -2,6 +2,10 @@ package ASCIIConvertor
 
 import Images.{ASCIIArt, BitmapImage}
 
+/**
+ * Converts image to ASCII art with non-linear shader table.
+ * @param shader What ranges of pixel values should be translated to what character
+ */
 class RangeASCIIConvertor(shader : Map[Range, Char]) extends ASCIIConvertor {
   override def GetASCIIArt(image : BitmapImage): ASCIIArt = {
     val values =

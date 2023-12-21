@@ -2,6 +2,10 @@ package ShaderLoaders
 
 import scala.io.Source
 
+/**
+ * Load non-linear shader table from a file
+ * @param filePath file with shader table
+ */
 class FileShaderLoader(filePath: String) extends ShaderLoader {
   override def Get(): Map[Range, Char] = {
     val source = Source.fromFile(filePath)

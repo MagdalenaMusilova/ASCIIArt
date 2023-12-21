@@ -2,6 +2,9 @@ package IO
 
 import scala.collection.mutable
 
+/**
+ * Can read what to printed by it
+ */
 class StringOutput extends Output {
   private val value: mutable.Queue[String] = mutable.Queue()
   private var lastValue : String = ""

@@ -3,6 +3,10 @@ import Images.{ASCIIArt, BitmapImage}
 
 import scala.math.log10
 
+/**
+ * Scales or shrinks an image
+ * @param scale How much bigger or smaller the image should be (can't be less or equal to zero)
+ */
 class ScaleFilter(scale : Double) extends ImageFilter {
   private def Shrink(image: ASCIIArt) : ASCIIArt = {
     val values =
