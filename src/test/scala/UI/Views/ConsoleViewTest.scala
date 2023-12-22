@@ -125,4 +125,15 @@ class ConsoleViewTest extends FunSuite with TimeLimitedTests {
     )
     assert(res1.equals(expectedRes) && res2.equals(expectedRes))
   }
+
+  test("ConsoleViewTestHelp") {
+    val input = new StringInput
+    val output = new StringOutput
+    val consoleView = new ConsoleView(input, output)
+
+    input.WriteLine(Seq("--help"))
+
+    consoleView.Start()
+    assert(output.ReadLine().nonEmpty)
+  }
 }

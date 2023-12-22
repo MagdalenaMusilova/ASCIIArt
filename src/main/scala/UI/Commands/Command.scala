@@ -26,6 +26,6 @@ case class Command(command: String,
    */
   def ToOneLine(paddingToDescription: Int): String = {
     val res = s"$command ${arguments.mkString(" ")}"
-    s"$res${(res.length until paddingToDescription).mkString(" ")}$description"
+    s"$res${(res.length until paddingToDescription).map(_ => " ").mkString("")}$description"
   }
 }

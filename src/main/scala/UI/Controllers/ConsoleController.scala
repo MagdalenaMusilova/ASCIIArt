@@ -11,7 +11,7 @@ class ConsoleController(output: Output) extends UIController {
    * All commands sorted by their general type
    */
   def CommandsByType: Map[CommandType, Seq[Command]] = Map(
-    HELP -> Seq(Command("--help", Seq.empty, "Turns off program", ExactCommandType.HELP)),
+    HELP -> Seq(Command("--help", Seq.empty, "Prints manual", ExactCommandType.HELP)),
     CONVERTIMAGE -> CICommandsByType.values.flatten.toSeq
   )
 
@@ -59,9 +59,10 @@ class ConsoleController(output: Output) extends UIController {
     output.PrintLn("Other commands:")
     output.PrintLines(PrintCommands(CommandsByType(HELP)), "   ")
     output.PrintLn("")
-    output.PrintLn("If you upload ASCII art range shader from a file, each value needs to be on a separate line and values needs to be in the following format:")
+    output.PrintLn("Format for uploading non-linear shader table from a file:")
     output.PrintLn("min..max->char")
-    output.PrintLn("So for example:")
+    output.PrintLn("")
+    output.PrintLn("An example of non-linear shader table file:")
     output.PrintLn("0..100->X")
     output.PrintLn("100.256->Y")
   }
@@ -70,7 +71,7 @@ class ConsoleController(output: Output) extends UIController {
    * Prints all of the given commands
    */
   private def PrintCommands(commands: Seq[Command]): Seq[String] = {
-    val bestPadding = commands.maxBy(x => x.SizeOfCommand + 4).SizeOfCommand
+    val bestPadding = commands.maxBy(x => x.SizeOfCommand).SizeOfCommand + 10
     commands.map(c => c.ToOneLine(bestPadding))
   }
 
