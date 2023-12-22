@@ -25,10 +25,10 @@ class ASCIIArtTest extends FunSuite{
     assert((151 until 256).forall(x => asciiArt.GetAt(x%16, x/16) == '4'))
   }
 
-  test("ASCIIArtTestZigZagImage"){
+  test("ASCIIArtTestUnevenImage"){
     val values = Seq(
       Seq(0, 255, 200),
-      Seq(0, 100, 100)
+      Seq(0, 100)
     )
     val shader = Map((0 until 256) -> 'X')
     intercept[Exception] {
