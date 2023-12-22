@@ -1,7 +1,6 @@
 package ImageFilters
 
 import Images.ASCIIArt
-import org.scalatest.FunSuite
 
 class MultiFilterTest extends ImageFilterTest(new MultiFilter(new FlipFilter(true), new InvertFilter())) {
   test("MultiFilterTest") {
@@ -34,7 +33,7 @@ class MultiFilterTest extends ImageFilterTest(new MultiFilter(new FlipFilter(tru
     assert((0 until 3).forall(y => expectedRes(y).equals(invertImage.GetLineAt(y))))
   }
 
-  test("MultiFilterTestNullified"){
+  test("MultiFilterTestNullified") {
     val values: Seq[Seq[Int]] = Seq(
       Seq(255, 255, 255),
       Seq(255, 128, 0),
@@ -46,7 +45,7 @@ class MultiFilterTest extends ImageFilterTest(new MultiFilter(new FlipFilter(tru
       (150 until 256) -> 'O'
     )
     val img = new ASCIIArt(values, shader)
-    val doubleInvertFilter= new MultiFilter(new InvertFilter, new InvertFilter)
+    val doubleInvertFilter = new MultiFilter(new InvertFilter, new InvertFilter)
     val doubleFlipFilter = new MultiFilter(
       new MultiFilter(new FlipFilter(true), new FlipFilter(true)),
       new MultiFilter(new FlipFilter(false), new FlipFilter(false))

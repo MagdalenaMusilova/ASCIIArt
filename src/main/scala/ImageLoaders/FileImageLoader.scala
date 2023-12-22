@@ -7,9 +7,10 @@ import javax.imageio.ImageIO
 
 /**
  * Gets image from a file. Supports default image files
+ *
  * @param filePath Path to the file with an image
  */
-class FileImageLoader(filePath : String) extends ImageLoader {
+class FileImageLoader(filePath: String) extends ImageLoader {
   override def Get(): BitmapImage = {
     val img = ImageIO.read(new File(filePath))
     val imageData: Seq[Seq[RGBColor]] =

@@ -8,8 +8,9 @@ import Images.ASCIIArt
 trait ImageFilter {
   /**
    * Returns the changed image
+   *
    * @param image Original image
    * @return Changed image
    */
-  def EditImage(image : ASCIIArt) : ASCIIArt
+  def EditImage(image: ASCIIArt): ASCIIArt
 }

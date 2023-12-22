@@ -1,13 +1,12 @@
 package ImageFilters
 
 import Images.ASCIIArt
-import org.scalatest.FunSuite
 
 class ScaleFilterTest extends ImageFilterTest(new ScaleFilter(4)) {
   test("ScaleFilterTestScale") {
     val bigValues: Seq[Seq[Int]] = Seq(
       Seq(255, 255, 255, 255),
-      Seq(255, 255, 0,   200),
+      Seq(255, 255, 0, 200),
       Seq(128, 0, 255, 10),
       Seq(0, 128, 255, 10)
     )
@@ -56,7 +55,7 @@ class ScaleFilterTest extends ImageFilterTest(new ScaleFilter(4)) {
     assert((0 until scaledImage.height).forall(y => scaledRes(y).equals(scaledImage.GetLineAt(y))))
   }
 
-  test("ScaleFilterTestWrongInput"){
+  test("ScaleFilterTestWrongInput") {
     val values: Seq[Seq[Int]] = Seq(
       Seq(0, 128),
       Seq(130, 255)
@@ -71,7 +70,7 @@ class ScaleFilterTest extends ImageFilterTest(new ScaleFilter(4)) {
       val filter = new ScaleFilter(3)
       filter.EditImage(img)
     }
-    intercept[Exception]{
+    intercept[Exception] {
       val filter = new ScaleFilter(0.3)
       filter.EditImage(img)
     }
@@ -100,7 +99,7 @@ class ScaleFilterTest extends ImageFilterTest(new ScaleFilter(4)) {
       "IIOO"
     )
     assert(res.width == expectedRes.head.length &&
-        res.height == expectedRes.length)
+      res.height == expectedRes.length)
     assert((0 until res.height).forall(y =>
       res.GetLineAt(y).equals(expectedRes(y))))
   }

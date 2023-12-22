@@ -8,7 +8,7 @@ import ImageLoaders.FileImageLoader
 import UI.Commands.ConvertImageData
 import org.scalatest.FunSuite
 
-class ConsoleControllerTest extends FunSuite{
+class ConsoleControllerTest extends FunSuite {
   test("ConsoleControllerTestExitHelpCommands") {
     val out = new StringOutput
     val consoleController = new ConsoleController(out)

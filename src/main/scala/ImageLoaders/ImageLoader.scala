@@ -9,5 +9,5 @@ trait ImageLoader {
   /**
    * Returns an image
    */
-  def Get() : BitmapImage
+  def Get(): BitmapImage
 }

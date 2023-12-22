@@ -1,12 +1,11 @@
 package ImageFilters
 
 import Images.ASCIIArt
-import org.scalatest.FunSuite
 
 class RotateFilterTest extends ImageFilterTest(new RotateFilter(90)) {
   test("RotateFilterTest") {
     val values: Seq[Seq[Int]] = Seq(
-      Seq(0,  10, 20, 30),
+      Seq(0, 10, 20, 30),
       Seq(40, 50, 60, 70),
       Seq(80, 90, 100, 110),
     )
@@ -37,7 +36,7 @@ class RotateFilterTest extends ImageFilterTest(new RotateFilter(90)) {
     assert((0 until 3).forall(y => expectedRes(y).equals(rotatedImage.GetLineAt(y))))
   }
 
-  test("RotateFilterFail"){
+  test("RotateFilterFail") {
     val values: Seq[Seq[Int]] = Seq(
       Seq(0, 10, 20, 30)
     )
@@ -45,13 +44,13 @@ class RotateFilterTest extends ImageFilterTest(new RotateFilter(90)) {
       (0 until 256) -> 'A',
     )
     val orgImage = new ASCIIArt(values, shader)
-    intercept[Exception]{
+    intercept[Exception] {
       val filter = new RotateFilter(91)
       filter.EditImage(orgImage)
     }
   }
 
-  test("RotateFilterTestNegativeAngle"){
+  test("RotateFilterTestNegativeAngle") {
     val values: Seq[Seq[Int]] = Seq(
       Seq(0, 10, 20, 30),
       Seq(40, 50, 60, 70),
@@ -72,7 +71,7 @@ class RotateFilterTest extends ImageFilterTest(new RotateFilter(90)) {
     assert(posRes.equals(negRes))
   }
 
-  test("RotateOneLine"){
+  test("RotateOneLine") {
     val values: Seq[Seq[Int]] = Seq(
       Seq(0, 100, 0, 100)
     )
@@ -84,11 +83,11 @@ class RotateFilterTest extends ImageFilterTest(new RotateFilter(90)) {
     val filter = new RotateFilter(90)
     val res = filter.EditImage(img)
     assert(res.width == img.height &&
-          res.height == img.width)
+      res.height == img.width)
     assert(
       res.GetAt(0, 0) == 'A' &&
-      res.GetAt(0, 1) == 'B' &&
-      res.GetAt(0, 2) == 'A' &&
-      res.GetAt(0, 3) == 'B')
+        res.GetAt(0, 1) == 'B' &&
+        res.GetAt(0, 2) == 'A' &&
+        res.GetAt(0, 3) == 'B')
   }
 }

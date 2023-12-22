@@ -24,7 +24,7 @@ class FixRatioFilterTest extends ImageFilterTest(new FixRatioFilter) {
       "XXXXOO"
     )
     assert(res.height == expectedRes.length &&
-          res.width == expectedRes.head.length)
+      res.width == expectedRes.head.length)
     assert((0 until res.height).forall(y =>
       res.GetLineAt(y).equals(expectedRes(y))
     ))

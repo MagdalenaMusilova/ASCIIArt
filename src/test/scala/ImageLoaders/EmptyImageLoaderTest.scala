@@ -2,7 +2,7 @@ package ImageLoaders
 
 import org.scalatest.FunSuite
 
-class EmptyImageLoaderTest extends FunSuite{
+class EmptyImageLoaderTest extends FunSuite {
   test("EmptyImageLoaderTest") {
     val loader = EmptyImageLoader
     intercept[Exception] {

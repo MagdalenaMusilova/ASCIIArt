@@ -6,12 +6,19 @@ import UI.Commands.ConvertImageCommandTypes.{CONVERTOR, ConvertImageCommandType,
 import UI.Commands.ExactCommandType.{BRIGHTNESSFILTER, DEFAULTCONVERTOR, FILEEXPORTER, FILELOADER, FIXRATIO, FLIPFILTER, INVERTFILTER, OUTPUTEXPORTER, RANDOMLOADER, RANGECONVERTOR, ROTATEFILTER, SCALEFILTER, SEQUENCECONVERTOR}
 import UI.Commands.{Command, ConvertImageData, ExactCommandType}
 
-class ConsoleController(output : Output) extends UIController {
-  def CommandsByType : Map[CommandType, Seq[Command]] = Map(
+class ConsoleController(output: Output) extends UIController {
+  /**
+   * All commands sorted by their general type
+   */
+  def CommandsByType: Map[CommandType, Seq[Command]] = Map(
     HELP -> Seq(Command("--help", Seq.empty, "Turns off program", ExactCommandType.HELP)),
     CONVERTIMAGE -> CICommandsByType.values.flatten.toSeq
   )
-  def CICommandsByType : Map[ConvertImageCommandType, Seq[Command]] = Map(
+
+  /**
+   * Sorted commands used for converting image
+   */
+  def CICommandsByType: Map[ConvertImageCommandType, Seq[Command]] = Map(
     LOADER -> Seq(
       Command("--image", Seq("[pathToFile]"), "Loads image stored in file", FILELOADER),
       Command("--image-random", Seq(), "Creates random image", RANDOMLOADER)
@@ -35,24 +42,22 @@ class ConsoleController(output : Output) extends UIController {
     )
   )
 
-  private def CommandToOneLine(commands : Seq[Command]) : Seq[String] = {
-    val bestPadding = commands.maxBy(x => x.SizeOfCommand + 4).SizeOfCommand
-    commands.map(c => c.ToOneLine(bestPadding))
-  }
-
+  /**
+   * Prints all options to output
+   */
   override def ShowHelp(): Unit = {
     output.PrintLn("Welcome to ASCII art convertor!")
     output.PrintLn("Commands for image conversion (order doesn't matter):")
     output.PrintLn("   Image source (exactly 1):")
-    output.PrintLines(CommandToOneLine(CICommandsByType(LOADER)), "   ")
+    output.PrintLines(PrintCommands(CICommandsByType(LOADER)), "   ")
     output.PrintLn("   Image export (at least 1):")
-    output.PrintLines(CommandToOneLine(CICommandsByType(EXPORTER)), "   ")
+    output.PrintLines(PrintCommands(CICommandsByType(EXPORTER)), "   ")
     output.PrintLn("   ASCII art shader (at most 1, if empty default):")
-    output.PrintLines(CommandToOneLine(CICommandsByType(CONVERTOR)), "   ")
+    output.PrintLines(PrintCommands(CICommandsByType(CONVERTOR)), "   ")
     output.PrintLn("   Image filters (unlimited, can be empty):")
-    output.PrintLines(CommandToOneLine(CICommandsByType(FILTER)), "   ")
+    output.PrintLines(PrintCommands(CICommandsByType(FILTER)), "   ")
     output.PrintLn("Other commands:")
-    output.PrintLines(CommandToOneLine(CommandsByType(HELP)), "   ")
+    output.PrintLines(PrintCommands(CommandsByType(HELP)), "   ")
     output.PrintLn("")
     output.PrintLn("If you upload ASCII art range shader from a file, each value needs to be on a separate line and values needs to be in the following format:")
     output.PrintLn("min..max->char")
@@ -61,6 +66,17 @@ class ConsoleController(output : Output) extends UIController {
     output.PrintLn("100.256->Y")
   }
 
+  /**
+   * Prints all of the given commands
+   */
+  private def PrintCommands(commands: Seq[Command]): Seq[String] = {
+    val bestPadding = commands.maxBy(x => x.SizeOfCommand + 4).SizeOfCommand
+    commands.map(c => c.ToOneLine(bestPadding))
+  }
+
+  /**
+   * Loads, converts, filters and exports to ASCII art an image.
+   */
   override def ConvertImage(command: ConvertImageData): Unit = {
     val bitmapImage = command.imageLoader.Get()
     val image = command.ASCIIConvertor.GetASCIIArt(bitmapImage)

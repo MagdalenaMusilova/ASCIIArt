@@ -47,7 +47,7 @@ class MultiImageExporterTest extends FunSuite {
     assert((0 until 3).forall(y => expectedRes(y) == outputB.ReadLine()))
   }
 
-  test("MultiImageExporterTestEmptyImage"){
+  test("MultiImageExporterTestEmptyImage") {
     val values: Seq[Seq[Int]] = Seq(Seq())
     val shader: Map[Range, Char] = Map((0 until 256) -> 'O')
     val image: ASCIIArt = new ASCIIArt(values, shader)
@@ -63,7 +63,7 @@ class MultiImageExporterTest extends FunSuite {
     assert(output2.ReadLine().isEmpty)
   }
 
-  test("MultiImageExporterTestInvalidExporter"){
+  test("MultiImageExporterTestInvalidExporter") {
     val values: Seq[Seq[Int]] = Seq(Seq())
     val shader: Map[Range, Char] = Map((0 until 256) -> 'O')
     val image: ASCIIArt = new ASCIIArt(values, shader)

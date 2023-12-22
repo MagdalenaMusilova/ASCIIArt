@@ -2,7 +2,7 @@ package IO
 
 import org.scalatest.FunSuite
 
-class StringOutputTest extends FunSuite{
+class StringOutputTest extends FunSuite {
   test("StringOutputTest") {
     val out = new StringOutput
     val jokes = Seq(

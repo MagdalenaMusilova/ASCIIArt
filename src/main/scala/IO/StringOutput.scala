@@ -7,7 +7,7 @@ import scala.collection.mutable
  */
 class StringOutput extends Output {
   private val value: mutable.Queue[String] = mutable.Queue()
-  private var lastValue : String = ""
+  private var lastValue: String = ""
   private var isEnqueueLastValue = false
 
   override def Print(text: String): Unit = {
@@ -16,16 +16,16 @@ class StringOutput extends Output {
   }
 
   override def PrintLn(text: String): Unit = {
-    if (isEnqueueLastValue){
+    if (isEnqueueLastValue) {
       value.enqueue(lastValue)
     }
     lastValue = text
     isEnqueueLastValue = true
   }
 
-  def ReadLine() : String = {
-    if (value.isEmpty){
-      if (isEnqueueLastValue){
+  def ReadLine(): String = {
+    if (value.isEmpty) {
+      if (isEnqueueLastValue) {
         val res = lastValue
         isEnqueueLastValue = false
         lastValue = ""

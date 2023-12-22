@@ -5,9 +5,9 @@ import org.scalatest.FunSuite
 import java.io.{File, PrintWriter}
 import scala.io.Source
 
-class FileShaderLoaderTest extends FunSuite{
+class FileShaderLoaderTest extends FunSuite {
   test("FileShaderLoaderTest") {
-    val shader : Map[Range, Char] = Map(
+    val shader: Map[Range, Char] = Map(
       (0 until 100) -> 'X',
       (0 until 200) -> 'I',
       (0 until 256) -> 'O'

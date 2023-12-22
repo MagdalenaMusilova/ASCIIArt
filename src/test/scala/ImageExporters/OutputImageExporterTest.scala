@@ -4,10 +4,7 @@ import IO.StringOutput
 import Images.ASCIIArt
 import org.scalatest.FunSuite
 
-import java.io.File
-import scala.io.Source
-
-class OutputImageExporterTest extends FunSuite{
+class OutputImageExporterTest extends FunSuite {
   test("OutputImageExporterTest") {
     val values: Seq[Seq[Int]] = Seq(
       Seq(0, 100, 0),

@@ -8,7 +8,7 @@ import scala.collection.mutable.ArrayBuffer
 class StringInput extends Input {
   private val values: ArrayBuffer[String] = ArrayBuffer()
 
-  def WriteLine(text : Seq[String]): Unit = {
+  def WriteLine(text: Seq[String]): Unit = {
     values.addAll(text)
   }
 

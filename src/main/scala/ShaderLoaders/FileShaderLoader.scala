@@ -4,6 +4,7 @@ import scala.io.Source
 
 /**
  * Load non-linear shader table from a file
+ *
  * @param filePath file with shader table
  */
 class FileShaderLoader(filePath: String) extends ShaderLoader {
@@ -13,16 +14,16 @@ class FileShaderLoader(filePath: String) extends ShaderLoader {
     source.close()
 
     var res: Map[Range, Char] = Map()
-    textInput.foreach(line => res+=LineToRange(line))
+    textInput.foreach(line => res += LineToRange(line))
     res
   }
 
-  private def LineToRange(line: String) : (Range, Char) = {
-    val lines : Seq[String] = line.trim.replace("..","->").split("->")
+  private def LineToRange(line: String): (Range, Char) = {
+    val lines: Seq[String] = line.trim.replace("..", "->").split("->")
     if (lines.size != 3 ||
-        !lines(0).forall(_.isDigit) ||
-        !lines(1).forall(_.isDigit) ||
-        lines(2).length != 1){
+      !lines(0).forall(_.isDigit) ||
+      !lines(1).forall(_.isDigit) ||
+      lines(2).length != 1) {
       throw new Exception("Corrupted shader file")
     }
     (lines(0).toInt until lines(1).toInt) -> lines(2).head

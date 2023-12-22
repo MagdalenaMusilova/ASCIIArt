@@ -3,7 +3,7 @@ package ImageExporters
 import Images.ASCIIArt
 import org.scalatest.FunSuite
 
-class EmptyImageExporterTest extends FunSuite{
+class EmptyImageExporterTest extends FunSuite {
   test("EmptyImageExporterTest") {
     val values = Seq(Seq(0))
     val shader: Map[Range, Char] = Map((0 until 256) -> 'O')

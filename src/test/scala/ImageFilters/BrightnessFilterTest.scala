@@ -1,7 +1,6 @@
 package ImageFilters
 
 import Images.ASCIIArt
-import org.scalatest.FunSuite
 
 class BrightnessFilterTest extends ImageFilterTest(new BrightnessFilter(5)) {
   test("BrightnessFilterTestBright") {
@@ -38,7 +37,7 @@ class BrightnessFilterTest extends ImageFilterTest(new BrightnessFilter(5)) {
     assert(expectedDarkRes.equals(darkImage.GetLineAt(0)))
   }
 
-  test("BrightnessFilterTestZeroValue"){
+  test("BrightnessFilterTestZeroValue") {
     val values: Seq[Seq[Int]] = Seq(
       Seq(0, 120, 128, 130, 250, 255),
     )

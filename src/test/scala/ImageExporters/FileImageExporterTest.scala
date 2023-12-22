@@ -6,23 +6,23 @@ import org.scalatest.FunSuite
 import java.io.File
 import scala.io.Source
 
-class FileImageExporterTest extends FunSuite{
+class FileImageExporterTest extends FunSuite {
   test("FileImageExporterTest") {
-    val values : Seq[Seq[Int]] = Seq(
+    val values: Seq[Seq[Int]] = Seq(
       Seq(0, 100, 0),
       Seq(100, 200, 100),
       Seq(0, 100, 200)
     )
-    val shader : Map[Range, Char] = Map(
+    val shader: Map[Range, Char] = Map(
       (0 until 50) -> 'O',
       (50 until 150) -> 'I',
       (150 until 256) -> 'X'
     )
-    val image : ASCIIArt = new ASCIIArt(values, shader)
-    val saver : FileImageExporter = new FileImageExporter( "tmp.txt")
+    val image: ASCIIArt = new ASCIIArt(values, shader)
+    val saver: FileImageExporter = new FileImageExporter("tmp.txt")
     saver.Export(image)
 
-    val expectedRes : Seq[String] = Seq(
+    val expectedRes: Seq[String] = Seq(
       "OIO",
       "IXI",
       "OIX"
@@ -39,7 +39,7 @@ class FileImageExporterTest extends FunSuite{
   }
 
   test("FileImageExporterTestCorruptedFile") {
-    val img = new ASCIIArt(Seq(Seq(0,1)), Map((0 until 256) -> 'X'))
+    val img = new ASCIIArt(Seq(Seq(0, 1)), Map((0 until 256) -> 'X'))
     val exporter = new FileImageExporter("\\/@")
     intercept[Exception](
       exporter.Export(img)

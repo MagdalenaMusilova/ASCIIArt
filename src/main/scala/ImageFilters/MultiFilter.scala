@@ -1,4 +1,5 @@
 package ImageFilters
+
 import Images.ASCIIArt
 
 /**

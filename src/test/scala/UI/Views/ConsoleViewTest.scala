@@ -10,10 +10,10 @@ import scala.concurrent.duration.DurationInt
 import scala.io.Source
 import scala.language.postfixOps
 
-class ConsoleViewTest extends FunSuite with TimeLimitedTests{
+class ConsoleViewTest extends FunSuite with TimeLimitedTests {
   override def timeLimit: Span = 10 seconds
 
-  test("ConsoleViewTest"){
+  test("ConsoleViewTest") {
     val input = new StringInput
     val output = new StringOutput
     val consoleView = new ConsoleView(input, output)

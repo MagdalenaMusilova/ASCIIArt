@@ -3,8 +3,8 @@ package ASCIIConvertor
 import Images.{BitmapImage, RGBColor}
 import org.scalatest.FunSuite
 
-trait DefaultASCIIConvertorTest extends FunSuite{
-  protected def runTest(convertor : ASCIIConvertor, shader : String){
+trait DefaultASCIIConvertorTest extends FunSuite {
+  protected def runTest(convertor: ASCIIConvertor, shader: String) {
     val expectedRes = shader + " "
 
     val values = (0 to shader.length)

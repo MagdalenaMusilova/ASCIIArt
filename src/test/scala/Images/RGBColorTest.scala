@@ -2,11 +2,11 @@ package Images
 
 import org.scalatest.FunSuite
 
-class RGBColorTest extends FunSuite{
+class RGBColorTest extends FunSuite {
   test("RGBColorTestSuccess") {
-    RGBColor(0,0,0)
-    RGBColor(24,128,5)
-    RGBColor(255,255,255)
+    RGBColor(0, 0, 0)
+    RGBColor(24, 128, 5)
+    RGBColor(255, 255, 255)
   }
 
   test("RGBColorTestFail") {

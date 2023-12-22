@@ -1,9 +1,9 @@
 package UI.Views
 
-import ASCIIConvertor.{BlockASCIIConvertor, DefaultASCIIConvertor, PaulBourkeASCIIConvertor, RangeASCIIConvertor, SequenceASCIIConvertor, ShortPaulBourkeASCIIConvertor}
+import ASCIIConvertor._
 import IO.{Input, Output}
-import ImageExporters.{EmptyImageExporter, FileImageExporter, ImageExporter, MultiImageExporter, OutputImageExporter}
-import ImageFilters.{BrightnessFilter, FixRatioFilter, FlipFilter, ImageFilter, InvertFilter, MultiFilter, RotateFilter, ScaleFilter}
+import ImageExporters._
+import ImageFilters._
 import ImageLoaders.{FileImageLoader, RandomImageLoader}
 import ShaderLoaders.FileShaderLoader
 import UI.Commands.CommandTypes.CommandType
@@ -14,7 +14,12 @@ import UI.Controllers.ConsoleController
 
 import scala.collection.mutable.ArrayBuffer
 
-class ConsoleView(input : Input, output : Output) {
+/**
+ * Runs the whole program
+ * @param input Where to get input from
+ * @param output Where should output be printed to
+ */
+class ConsoleView(input: Input, output: Output) {
   private val controller = new ConsoleController(output)
 
   def Start(): Unit = {
@@ -27,6 +32,11 @@ class ConsoleView(input : Input, output : Output) {
     }
   }
 
+  /**
+   * Groups raw text input so that a command and its arguments are together
+   * @param textInput Individual words from input
+   * @return Sequence of commands with their arguments
+   */
   private def GroupTextInput(textInput: Seq[String]): Seq[Seq[String]] = {
     val res = new ArrayBuffer[ArrayBuffer[String]]()
     textInput.foreach(word =>
@@ -41,6 +51,10 @@ class ConsoleView(input : Input, output : Output) {
     res.map(i => i.toSeq).toSeq
   }
 
+  /**
+   * Get what kind of command is on input
+   * @param commands Grouped commands from input
+   */
   private def GetInputType(commands: Seq[Seq[String]]): CommandType = {
     if (commands.isEmpty) {
       throw new Exception("No input")
@@ -59,11 +73,32 @@ class ConsoleView(input : Input, output : Output) {
     controller.ShowHelp()
   }
 
+  /**
+   * Converts image according to given commands
+   * @param textInput Grouped commands
+   */
   private def ConvertImage(textInput: Seq[Seq[String]]): Unit = {
     val command = LoadConvertImageInput(textInput)
     controller.ConvertImage(command)
   }
 
+  /**
+   * Loads ConvertImageData from given commands
+   * @param textCommands Grouped commands
+   */
+  private def LoadConvertImageInput(textCommands: Seq[Seq[String]]): ConvertImageData = {
+    val sortedCommands = SortConvertImageInput(textCommands)
+    val convertImageData = new ConvertImageData
+    LoadLoader(sortedCommands(LOADER), convertImageData)
+    LoadExporters(sortedCommands(EXPORTER), convertImageData)
+    LoadConverter(sortedCommands(CONVERTOR), convertImageData)
+    LoadFilter(sortedCommands(FILTER), convertImageData)
+    convertImageData
+  }
+
+  /**
+   * Groups commands to loaders, exporters, convertors and filters
+   */
   private def SortConvertImageInput(textCommands: Seq[Seq[String]])
   : Map[ConvertImageCommandType, Seq[Seq[String]]] = {
     val res: Map[ConvertImageCommandType, ArrayBuffer[Seq[String]]] = Map(
@@ -82,16 +117,9 @@ class ConsoleView(input : Input, output : Output) {
     res.map(a => a._1 -> a._2.map(b => b.toSeq).toSeq)
   }
 
-  private def LoadConvertImageInput(textCommands: Seq[Seq[String]]): ConvertImageData = {
-    val sortedCommands = SortConvertImageInput(textCommands)
-    val convertImageData = new ConvertImageData
-    LoadLoader(sortedCommands(LOADER), convertImageData)
-    LoadExporters(sortedCommands(EXPORTER), convertImageData)
-    LoadConverter(sortedCommands(CONVERTOR), convertImageData)
-    LoadFilter(sortedCommands(FILTER), convertImageData)
-    convertImageData
-  }
-
+  /**
+   * Updates loaders in ConvertImageData by given commands
+   */
   private def LoadLoader(textCommands: Seq[Seq[String]], commandData: ConvertImageData): Unit = {
     if (textCommands.isEmpty) {
       throw new Exception("No image loaders")
@@ -102,7 +130,7 @@ class ConsoleView(input : Input, output : Output) {
     val textCom = textCommands.head
     val command = controller.CICommandsByType(LOADER).find(x => x.command == textCom.head).get
 
-    if (textCom.size - 1 != command.arguments.size){
+    if (textCom.size - 1 != command.arguments.size) {
       throw new Exception("Too many arguments for image loading")
     }
     command.exactType match {
@@ -115,14 +143,9 @@ class ConsoleView(input : Input, output : Output) {
     }
   }
 
-  private def AddExporter(commandData: ConvertImageData, exporter: ImageExporter): Unit = {
-    if (commandData.imageExporter == EmptyImageExporter){
-      commandData.imageExporter = exporter
-    } else {
-      commandData.imageExporter = new MultiImageExporter(exporter, commandData.imageExporter)
-    }
-  }
-
+  /**
+   * Updates exporters in ConvertImageData by given commands
+   */
   private def LoadExporters(textCommands: Seq[Seq[String]], commandData: ConvertImageData): Unit = {
     if (textCommands.isEmpty) {
       throw new Exception("No image exporter")
@@ -143,15 +166,25 @@ class ConsoleView(input : Input, output : Output) {
     })
   }
 
-  private def ConvertorClassToString(instance: Any): String = {
-    instance.toString.replace("asciiconvertor", "")
+  /**
+   * Add a new exporter to ConvertImageData
+   */
+  private def AddExporter(commandData: ConvertImageData, exporter: ImageExporter): Unit = {
+    if (commandData.imageExporter == EmptyImageExporter) {
+      commandData.imageExporter = exporter
+    } else {
+      commandData.imageExporter = new MultiImageExporter(exporter, commandData.imageExporter)
+    }
   }
 
+  /**
+   * Updates convertors in ConvertImageData by given commands
+   */
   private def LoadConverter(textCommands: Seq[Seq[String]], commandData: ConvertImageData): Unit = {
     if (textCommands.size > 1) {
       throw new Exception("Too many ASCII convertors")
     }
-    if (textCommands.isEmpty){
+    if (textCommands.isEmpty) {
       commandData.ASCIIConvertor = DefaultASCIIConvertor
       return
     }
@@ -162,11 +195,11 @@ class ConsoleView(input : Input, output : Output) {
       }
       command.exactType match {
         case DEFAULTCONVERTOR =>
-          if (textCom(1) == ConvertorClassToString(new PaulBourkeASCIIConvertor())){
+          if (textCom(1) == GetShaderTableName(new PaulBourkeASCIIConvertor())) {
             commandData.ASCIIConvertor = new PaulBourkeASCIIConvertor
-          } else if (textCom(1) == ConvertorClassToString(new ShortPaulBourkeASCIIConvertor())) {
+          } else if (textCom(1) == GetShaderTableName(new ShortPaulBourkeASCIIConvertor())) {
             commandData.ASCIIConvertor = new ShortPaulBourkeASCIIConvertor
-          } else if (textCom(1) == ConvertorClassToString(new BlockASCIIConvertor())) {
+          } else if (textCom(1) == GetShaderTableName(new BlockASCIIConvertor())) {
             commandData.ASCIIConvertor = new BlockASCIIConvertor
           } else {
             throw new Exception("Unknown table name")
@@ -181,24 +214,16 @@ class ConsoleView(input : Input, output : Output) {
     })
   }
 
-  private def IsInt(text: String) : Boolean = {
-    try{
-      text.toInt
-    } catch {
-      case _: Throwable => return false
-    }
-    true
+  /**
+   * Gets shader table from instance of ASCII Convertor class
+   */
+  private def GetShaderTableName(instance: Any): String = {
+    instance.toString.replace("asciiconvertor", "")
   }
 
-  private def IsDouble(text: String): Boolean = {
-    try {
-      text.toDouble
-    } catch {
-      case _: Throwable => return false
-    }
-    true
-  }
-
+  /**
+   * Updates filters in ConvertImageData by given commands
+   */
   private def LoadFilter(textCommands: Seq[Seq[String]], commandData: ConvertImageData): Unit = {
     textCommands.foreach(textCom => {
       val command = controller.CICommandsByType(FILTER).find(x => x.command == textCom.head).get
@@ -207,7 +232,7 @@ class ConsoleView(input : Input, output : Output) {
       }
       command.exactType match {
         case ROTATEFILTER =>
-          if (!IsInt(textCom(1))){
+          if (!IsInt(textCom(1))) {
             throw new Exception("Input for rotate filter isn't a number")
           }
           commandData.imageFilter = new MultiFilter(new RotateFilter(textCom(1).toInt), commandData.imageFilter)
@@ -233,5 +258,29 @@ class ConsoleView(input : Input, output : Output) {
         case _ => throw new Exception("Chosen filter not implemented")
       }
     })
+  }
+
+  /**
+   * Check if given text is an int value
+   */
+  private def IsInt(text: String): Boolean = {
+    try {
+      text.toInt
+    } catch {
+      case _: Throwable => return false
+    }
+    true
+  }
+
+  /**
+   * Check if given text is a double value
+   */
+  private def IsDouble(text: String): Boolean = {
+    try {
+      text.toDouble
+    } catch {
+      case _: Throwable => return false
+    }
+    true
   }
 }

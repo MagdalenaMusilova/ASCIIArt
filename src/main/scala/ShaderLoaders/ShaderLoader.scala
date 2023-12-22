@@ -7,5 +7,5 @@ trait ShaderLoader {
   /**
    * Returns non-linear shader table
    */
-  def Get() : Map[Range, Char]
+  def Get(): Map[Range, Char]
 }

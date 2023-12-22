@@ -1,19 +1,19 @@
 package ASCIIConvertor
 
-import Images.{ASCIIArt, BitmapImage, RGBColor}
-import org.scalatest.{FunSuite, ScalaTestVersion}
+import Images.{BitmapImage, RGBColor}
+import org.scalatest.FunSuite
 
-class RangeASCIIConvertorTest extends FunSuite{
+class RangeASCIIConvertorTest extends FunSuite {
   test("RangeASCIIConvertorTest") {
-    val white : RGBColor = new RGBColor(255,255,255)
-    val grey : RGBColor = new RGBColor(128,128,128)
-    val black : RGBColor = new RGBColor(0,0,0)
+    val white: RGBColor = new RGBColor(255, 255, 255)
+    val grey: RGBColor = new RGBColor(128, 128, 128)
+    val black: RGBColor = new RGBColor(0, 0, 0)
     val values = Seq(
-      Seq(black,grey,black,grey,black),
-      Seq(white,grey,black,grey,white),
-      Seq(white,grey,white,grey,white),
-      Seq(black,white,grey,white,black),
-      Seq(black,grey,white,white,black)
+      Seq(black, grey, black, grey, black),
+      Seq(white, grey, black, grey, white),
+      Seq(white, grey, white, grey, white),
+      Seq(black, white, grey, white, black),
+      Seq(black, grey, white, white, black)
     )
     val bitmap = new BitmapImage(values)
     val shader: Map[Range, Char] = Map(
@@ -21,24 +21,24 @@ class RangeASCIIConvertorTest extends FunSuite{
       (2 until 255) -> 'I',
       (255 until 256) -> 'O',
     )
-    val convertor : RangeASCIIConvertor = new RangeASCIIConvertor(shader)
+    val convertor: RangeASCIIConvertor = new RangeASCIIConvertor(shader)
     val res = convertor.GetASCIIArt(bitmap)
 
     val expectedRes = Seq(
-      Seq('X','I','X','I','X'),
-      Seq('O','I','X','I','O'),
-      Seq('O','I','O','I','O'),
-      Seq('X','O','I','O','X'),
-      Seq('X','I','O','O','X')
+      Seq('X', 'I', 'X', 'I', 'X'),
+      Seq('O', 'I', 'X', 'I', 'O'),
+      Seq('O', 'I', 'O', 'I', 'O'),
+      Seq('X', 'O', 'I', 'O', 'X'),
+      Seq('X', 'I', 'O', 'O', 'X')
     )
     assert(
       (0 until 5).forall(y =>
-        (0 until 5). forall(x =>
-          res.GetAt(x,y) == expectedRes(y)(x)))
+        (0 until 5).forall(x =>
+          res.GetAt(x, y) == expectedRes(y)(x)))
     )
   }
 
-  test("RangeASCIIConvertorTestNotCoveringShader"){
+  test("RangeASCIIConvertorTestNotCoveringShader") {
     val image = new BitmapImage(Seq(Seq(RGBColor(0, 0, 0))))
     val notCoveringShader = Map(
       (0 until 100) -> 'O',
@@ -49,7 +49,7 @@ class RangeASCIIConvertorTest extends FunSuite{
     }
   }
 
-  test("RangeASCIIConvertorTestOverlappingShader"){
+  test("RangeASCIIConvertorTestOverlappingShader") {
     val image = new BitmapImage(Seq(Seq(RGBColor(0, 0, 0))))
     val overlappingShader = Map(
       (0 to 120) -> 'O',
@@ -60,7 +60,7 @@ class RangeASCIIConvertorTest extends FunSuite{
     }
   }
 
-  test("RangeASCIIConvertorTestNegativeValueShader"){
+  test("RangeASCIIConvertorTestNegativeValueShader") {
     val image = new BitmapImage(Seq(Seq(RGBColor(0, 0, 0))))
     val negativeValuesShader = Map(
       (-10 until 256) -> 'X'
@@ -70,7 +70,7 @@ class RangeASCIIConvertorTest extends FunSuite{
     }
   }
 
-  test("RangeASCIIConvertorTestTooBigValueShader"){
+  test("RangeASCIIConvertorTestTooBigValueShader") {
     val image = new BitmapImage(Seq(Seq(RGBColor(0, 0, 0))))
     val tooBigValuesShader = Map(
       (0 until 257) -> 'X'

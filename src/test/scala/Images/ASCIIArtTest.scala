@@ -2,15 +2,13 @@ package Images
 
 import org.scalatest.FunSuite
 
-import scala.collection.immutable.Map
-
-class ASCIIArtTest extends FunSuite{
+class ASCIIArtTest extends FunSuite {
   test("ASCIIArtTest") {
-    val values : Seq[Seq[Int]] =
+    val values: Seq[Seq[Int]] =
       (0 until 16)
         .map(y => (0 until 16)
-          .map(x => y*16+x))
-    val shader : Map[Range, Char] = Map(
+          .map(x => y * 16 + x))
+    val shader: Map[Range, Char] = Map(
       (150 until 151) -> '3',
       (10 until 100) -> '1',
       (0 until 10) -> '0',
@@ -18,14 +16,14 @@ class ASCIIArtTest extends FunSuite{
       (151 until 256) -> '4'
     )
     val asciiArt = new ASCIIArt(values, shader)
-    assert((0 until 10).forall(x => asciiArt.GetAt(x%16, x/16) == '0'))
-    assert((10 until 100).forall(x => asciiArt.GetAt(x%16, x/16) == '1'))
-    assert((100 until 150).forall(x => asciiArt.GetAt(x%16, x/16) == '2'))
-    assert((150 until 151).forall(x => asciiArt.GetAt(x%16, x/16) == '3'))
-    assert((151 until 256).forall(x => asciiArt.GetAt(x%16, x/16) == '4'))
+    assert((0 until 10).forall(x => asciiArt.GetAt(x % 16, x / 16) == '0'))
+    assert((10 until 100).forall(x => asciiArt.GetAt(x % 16, x / 16) == '1'))
+    assert((100 until 150).forall(x => asciiArt.GetAt(x % 16, x / 16) == '2'))
+    assert((150 until 151).forall(x => asciiArt.GetAt(x % 16, x / 16) == '3'))
+    assert((151 until 256).forall(x => asciiArt.GetAt(x % 16, x / 16) == '4'))
   }
 
-  test("ASCIIArtTestUnevenImage"){
+  test("ASCIIArtTestUnevenImage") {
     val values = Seq(
       Seq(0, 255, 200),
       Seq(0, 100)
@@ -36,7 +34,7 @@ class ASCIIArtTest extends FunSuite{
     }
   }
 
-  test("ASCIIArtTestOverlapping"){
+  test("ASCIIArtTestOverlapping") {
     val values = Seq(
       Seq(0, 255, 200),
       Seq(0, 100, 100)
@@ -66,7 +64,7 @@ class ASCIIArtTest extends FunSuite{
     }
   }
 
-  test("ASCIIArtTestNegativeShader"){
+  test("ASCIIArtTestNegativeShader") {
     val values = Seq(
       Seq(0, 255, 200),
       Seq(0, 100, 100)
@@ -201,7 +199,7 @@ class ASCIIArtTest extends FunSuite{
     }
   }
 
-  test("ASCIIArtTestInvalidIndex"){
+  test("ASCIIArtTestInvalidIndex") {
     val values = Seq(
       Seq(0, 100, 200),
       Seq(123, 150, 250),
@@ -213,8 +211,8 @@ class ASCIIArtTest extends FunSuite{
       (200 until 256) -> 'O'
     )
     val img = new ASCIIArt(values, shader)
-    intercept[Exception]{
-      img.GetAt(0,3)
+    intercept[Exception] {
+      img.GetAt(0, 3)
     }
     intercept[Exception] {
       img.GetAt(3, 2)

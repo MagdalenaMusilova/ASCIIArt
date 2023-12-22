@@ -1,13 +1,12 @@
 package ImageFilters
 
 import Images.ASCIIArt
-import org.scalatest.FunSuite
 
 class FlipFilterTest extends ImageFilterTest(new FlipFilter(true)) {
   test("FlipFilterTestFlipX") {
     val values: Seq[Seq[Int]] = Seq(
       Seq(0, 100),
-      Seq(150,200)
+      Seq(150, 200)
     )
     val shader: Map[Range, Char] = Map(
       (0 until 50) -> 'A',
