@@ -4,6 +4,8 @@ A Scala-based image-to-ASCII art converter, created as a semestral project for t
 
 This tool allows you to convert images into ASCII art using various filters, output methods, and shading techniques.
 
+This project was developed as a semester assignment for the BI-OOP course at the Faculty of Information Technology, Czech Technical University.
+
 ---
 
 ## Getting Started
