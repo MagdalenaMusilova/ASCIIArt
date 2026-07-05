@@ -18,7 +18,7 @@ class ConsoleViewTest extends FunSuite with TimeLimitedTests {
     val output = new StringOutput
     val consoleView = new ConsoleView(input, output)
 
-    input.WriteLine(Seq("--image", "loaderTest2.png", "--output-file", "tmp.txt", "--custom-table", "XIO", "--invert"))
+    input.WriteLine(Seq("--image", "images/loaderTest2.png", "--output-file", "tmp.txt", "--custom-table", "XIO", "--invert"))
 
     consoleView.Start()
 
@@ -40,7 +40,7 @@ class ConsoleViewTest extends FunSuite with TimeLimitedTests {
     val output = new StringOutput
     val consoleView = new ConsoleView(input, output)
 
-    input.WriteLine(Seq("--image", "loaderTest2.png", "--output-file", "tmp.txt", "--custom-table", "XIO", "--invert", "--IDK"))
+    input.WriteLine(Seq("--image", "images/loaderTest2.png", "--output-file", "tmp.txt", "--custom-table", "XIO", "--invert", "--IDK"))
 
     intercept[Exception] {
       consoleView.Start()
@@ -52,7 +52,7 @@ class ConsoleViewTest extends FunSuite with TimeLimitedTests {
     val output = new StringOutput
     val consoleView = new ConsoleView(input, output)
 
-    input.WriteLine(Seq("--image", "loaderTest2.png", "--output-file", "tmp.txt", "--custom-table", "XIO", "--invert", "--flip", "S"))
+    input.WriteLine(Seq("--image", "images/loaderTest2.png", "--output-file", "tmp.txt", "--custom-table", "XIO", "--invert", "--flip", "S"))
 
     intercept[Exception] {
       consoleView.Start()
@@ -76,7 +76,7 @@ class ConsoleViewTest extends FunSuite with TimeLimitedTests {
     val output = new StringOutput
     val consoleView = new ConsoleView(input, output)
 
-    input.WriteLine(Seq("--image", "loaderTest2.png", "--output-file", "tmp.txt", "--custom-table", "XIO"))
+    input.WriteLine(Seq("--image", "images/loaderTest2.png", "--output-file", "tmp.txt", "--custom-table", "XIO"))
 
     consoleView.Start()
 
@@ -99,7 +99,7 @@ class ConsoleViewTest extends FunSuite with TimeLimitedTests {
     val consoleView = new ConsoleView(input, output)
 
     input.WriteLine(Seq(
-      "--image", "loaderTest2.png",
+      "--image", "images/loaderTest2.png",
       "--output-file", "tmp.txt", "--output-file", "tmp2.txt",
       "--custom-table", "XIO",
       "--invert", "--flip", "X", "--scale", "2"))

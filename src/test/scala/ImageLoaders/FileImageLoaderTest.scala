@@ -5,7 +5,7 @@ import org.scalatest.FunSuite
 
 class FileImageLoaderTest extends FunSuite {
   test("FileImageLoaderTest") {
-    val reader = new FileImageLoader("loaderTest1.png")
+    val reader = new FileImageLoader("images/loaderTest1.png")
     val image = reader.Get()
     //first row (greys)
     assert(image.GetAt(0, 0) == new RGBColor(255, 255, 255))

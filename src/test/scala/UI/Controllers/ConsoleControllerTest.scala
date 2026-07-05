@@ -21,7 +21,7 @@ class ConsoleControllerTest extends FunSuite {
   test("ConsoleControllerTest") {
     val consoleController = new ConsoleController(new StringOutput)
     val command = new ConvertImageData
-    command.imageLoader = new FileImageLoader("loaderTest2.png")
+    command.imageLoader = new FileImageLoader("images/loaderTest2.png")
     command.ASCIIConvertor = new SequenceASCIIConvertor("XIO")
     command.imageFilter = new MultiFilter(new FlipFilter(true), new FlipFilter(false))
     val imageOutput = new StringOutput

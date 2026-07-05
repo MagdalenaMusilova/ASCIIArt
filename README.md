@@ -113,13 +113,13 @@ run --image [pathToFile] [options...]
 Example:
 
 ```bash
-run --image "testImage1.png" --rotate 90 --scale 0.25 --invert --output-console
+run --image "images/testImage1.png" --rotate 90 --scale 0.25 --invert --output-console
 ```
 
 You can also run it directly from the terminal:
 
 ```bash
-sbt "run --image testImage1.png --rotate 90 --scale 0.25 --invert --output-console"
+sbt "run --image images/testImage1.png --rotate 90 --scale 0.25 --invert --output-console"
 ```
 
 ---
@@ -167,7 +167,7 @@ Predefined character ramps (dark → light):
 Example with a custom table:
 
 ```bash
-run --image "testImage1.png" --custom-table "@%#*+=-:. " --output-console
+run --image "images/testImage1.png" --custom-table "@%#*+=-:. " --output-console
 ```
 
 ### Filters
@@ -212,12 +212,12 @@ Each line maps a brightness range (`min..max`) to a single character:
 ## Example
 
 ```bash
-run --image "testImage1.png" --rotate 90 --scale 0.25 --invert --fix-ratio --output-console
+run --image "images/testImage1.png" --rotate 90 --scale 0.25 --invert --fix-ratio --output-console
 ```
 
 This command:
 
-- loads an image from `testImage1.png`
+- loads an image from `images/testImage1.png`
 - rotates it by 90 degrees
 - scales it down to 25%
 - inverts the colors
@@ -230,8 +230,8 @@ This command:
 
 | Input | ASCII output |
 | --- | --- |
-| ![testImage1](testImage1.png) | ![testImage1 as ASCII art](testImage1_out.png) |
-| ![testImage2](testImage2.jpg) | ![testImage2 as ASCII art](testImage2_out.png) |
+| ![testImage1](images/testImage1.png) | ![testImage1 as ASCII art](images/testImage1_out.png) |
+| ![testImage2](images/testImage2.jpg) | ![testImage2 as ASCII art](images/testImage2_out.png) |
 
 Image credits (via [Pixabay](https://pixabay.com)):
 
